@@ -1,19 +1,20 @@
 # Excel Comparison Tool
 
-A web application that compares Modon and Sakneen Excel sheets to identify status discrepancies.
+A client-side web application that compares Modon and Sakneen Excel sheets to identify status discrepancies. Runs entirely in your browser - no server required!
 
 ## 🌐 Live Demo
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/your-template-id)
+[![Deploy to GitHub Pages](https://github.com/images/modules/site/buttons/deploy-to-github-pages.svg)](https://github.com/yourusername/excel-comparison-tool)
 
 ## Features
 
+- **Client-side processing** - All processing happens in your browser
 - Upload two Excel files (Modon and Sakneen)
 - Compare Unit Number (Modon) with UnitID (Sakneen)
 - Identify discrepancies when units have EOI data in Modon but show as "Available" in Sakneen
-- Download highlighted Sakneen file with discrepancies marked in yellow
 - Export discrepancies in CSV, Excel, and JSON formats
 - Modern, responsive web interface
+- No server required - works offline after first load
 
 ## How it works
 
@@ -31,52 +32,40 @@ A web application that compares Modon and Sakneen Excel sheets to identify statu
    - Match units by Unit Number (Modon) = UnitID (Sakneen)
    - If Modon has EOI data (unit not available) but Sakneen shows "Available", highlight the discrepancy
 
-## 🚀 Quick Deploy
+## 🚀 Deploy to GitHub Pages
 
-### Option 1: Railway (Recommended)
+1. **Fork this repository**
+2. **Enable GitHub Pages**:
+   - Go to your repository settings
+   - Scroll to "Pages" section
+   - Select "Deploy from a branch"
+   - Choose "main" branch and "/ (root)" folder
+   - Click "Save"
+3. **Your app will be live at**: `https://yourusername.github.io/excel-comparison-tool`
 
-1. Fork this repository
-2. Go to [railway.app](https://railway.app)
-3. Connect your GitHub account
-4. Deploy this repository
-5. Your app will be live at a public URL!
+## Local Usage
 
-### Option 2: Heroku
+1. **Clone the repository**:
 
 ```bash
-# Clone the repository
 git clone https://github.com/yourusername/excel-comparison-tool.git
 cd excel-comparison-tool
-
-# Install Heroku CLI and login
-heroku login
-
-# Create and deploy
-heroku create your-app-name
-git push heroku main
 ```
 
-### Option 3: Render
-
-1. Connect your GitHub repository to [render.com](https://render.com)
-2. Create a new Web Service
-3. Deploy automatically
-
-## Local Installation
-
-1. Install Python dependencies:
+2. **Open `index.html` in your browser** or use a local server:
 
 ```bash
-pip install -r requirements.txt
+# Using Python
+python -m http.server 8000
+
+# Using Node.js
+npx serve .
+
+# Using PHP
+php -S localhost:8000
 ```
 
-2. Run the application:
-
-```bash
-python app.py
-```
-
-3. Open your browser and go to: `http://localhost:5002`
+3. **Visit**: `http://localhost:8000`
 
 ## Usage
 
@@ -84,33 +73,38 @@ python app.py
 2. Upload your Sakneen Excel file
 3. Click "Compare Files"
 4. Review the discrepancies found
-5. Download the highlighted Sakneen file
-6. Export discrepancies in your preferred format
+5. Export discrepancies in your preferred format (CSV, Excel, JSON)
 
 ## File Structure
 
-- `app.py` - Main Flask application
-- `templates/index.html` - Web interface
-- `requirements.txt` - Python dependencies
-- `Procfile` - Deployment configuration
-- `runtime.txt` - Python version specification
-- `uploads/` - Temporary file storage (created automatically)
+- `index.html` - Complete client-side application
+- `README.md` - This file
+- `LICENSE` - MIT License
 
-## Requirements
+## Technology Stack
 
-- Python 3.7+
-- Flask
-- pandas
-- openpyxl
-- Werkzeug
+- **HTML5** - Structure
+- **CSS3** - Styling with modern features
+- **JavaScript (ES6+)** - Client-side processing
+- **SheetJS** - Excel file reading and writing
+- **No dependencies** - Everything runs in the browser
+
+## Browser Compatibility
+
+- Chrome 60+
+- Firefox 55+
+- Safari 12+
+- Edge 79+
 
 ## Notes
 
-- The application handles case-insensitive column matching
-- Files are automatically cleaned up after processing
-- Maximum file size: 16MB
-- Supports .xlsx and .xls formats
-- Export functionality available in CSV, Excel, and JSON formats
+- **Privacy**: All processing happens locally in your browser - no data is sent to any server
+- **Performance**: Handles large Excel files efficiently
+- **Offline**: Works without internet connection after first load
+- **Security**: No server-side vulnerabilities
+- **Case-insensitive**: Column matching is case-insensitive
+- **File formats**: Supports .xlsx and .xls formats
+- **Export options**: CSV, Excel, and JSON formats available
 
 ## Contributing
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Excel Comparison Tool</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
       * {
         margin: 0;
@@ -199,6 +200,11 @@
         font-size: 0.9em;
       }
 
+      .download-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(39, 174, 96, 0.3);
+      }
+
       .export-section {
         margin-top: 15px;
         padding: 12px;
@@ -248,11 +254,6 @@
 
       .export-btn.json {
         background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
-      }
-
-      .download-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(39, 174, 96, 0.3);
       }
 
       .error {
@@ -376,10 +377,159 @@
     </div>
 
     <script>
+      // Excel processing functions
+      function readExcelFile(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            try {
+              const data = new Uint8Array(e.target.result);
+              const workbook = XLSX.read(data, { type: "array" });
+              const sheetName = workbook.SheetNames[0];
+              const worksheet = workbook.Sheets[sheetName];
+              const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+              resolve(jsonData);
+            } catch (error) {
+              reject(error);
+            }
+          };
+          reader.onerror = reject;
+          reader.readAsArrayBuffer(file);
+        });
+      }
+
+      function findColumnIndex(headers, searchTerms) {
+        for (let term of searchTerms) {
+          for (let i = 0; i < headers.length; i++) {
+            if (headers[i] && headers[i].toString().toLowerCase().includes(term.toLowerCase())) {
+              return i;
+            }
+          }
+        }
+        return -1;
+      }
+
+      function compareExcelSheets(modonData, sakneenData) {
+        try {
+          // Read Modon sheet (headers at row 3, index 2)
+          const modonHeaders = modonData[2];
+          const modonUnitCol = findColumnIndex(modonHeaders, ["unit number"]);
+          const modonEoiCol = findColumnIndex(modonHeaders, ["eoi"]);
+
+          // Read Sakneen sheet (headers at row 1, index 0)
+          const sakneenHeaders = sakneenData[0];
+          const sakneenUnitCol = findColumnIndex(sakneenHeaders, ["unitid", "unit id"]);
+          const sakneenStatusCol = findColumnIndex(sakneenHeaders, ["status"]);
+
+          if (modonUnitCol === -1 || modonEoiCol === -1 || sakneenUnitCol === -1 || sakneenStatusCol === -1) {
+            throw new Error("Required columns not found. Please check your Excel files.");
+          }
+
+          // Create mapping from Modon data
+          const modonMapping = {};
+          for (let i = 3; i < modonData.length; i++) {
+            const row = modonData[i];
+            if (row[modonUnitCol] && row[modonEoiCol] !== undefined) {
+              const unitNumber = row[modonUnitCol].toString().trim();
+              const eoiValue = row[modonEoiCol];
+              const hasEoi = eoiValue !== null && eoiValue !== undefined && eoiValue.toString().trim() !== "";
+              modonMapping[unitNumber] = hasEoi;
+            }
+          }
+
+          // Find discrepancies
+          const discrepancies = [];
+          const sakneenResult = [...sakneenData];
+
+          for (let i = 1; i < sakneenData.length; i++) {
+            const row = sakneenData[i];
+            if (row[sakneenUnitCol] && row[sakneenStatusCol]) {
+              const unitId = row[sakneenUnitCol].toString().trim();
+              const status = row[sakneenStatusCol].toString().trim();
+
+              if (modonMapping.hasOwnProperty(unitId)) {
+                const hasEoi = modonMapping[unitId];
+                if (hasEoi && status.toLowerCase() === "available") {
+                  discrepancies.push({
+                    unit_id: unitId,
+                    modon_status: "Not Available (has EOI)",
+                    sakneen_status: status,
+                    issue: "Unit has EOI in Modon but shows as Available in Sakneen",
+                  });
+
+                  // Mark row for highlighting
+                  if (!sakneenResult[i]._highlight) {
+                    sakneenResult[i]._highlight = true;
+                  }
+                }
+              }
+            }
+          }
+
+          return {
+            success: true,
+            discrepancies: discrepancies,
+            total_discrepancies: discrepancies.length,
+            sakneenResult: sakneenResult,
+            sakneenHeaders: sakneenHeaders,
+          };
+        } catch (error) {
+          return { error: error.message };
+        }
+      }
+
+      function downloadFile(data, filename, type) {
+        const blob = new Blob([data], { type: type });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }
+
+      function exportToCSV(discrepancies) {
+        if (discrepancies.length === 0) return;
+
+        const headers = ["Unit ID", "Modon Status", "Sakneen Status", "Issue"];
+        const csvContent = [headers.join(","), ...discrepancies.map((d) => [`"${d.unit_id}"`, `"${d.modon_status}"`, `"${d.sakneen_status}"`, `"${d.issue}"`].join(","))].join("\n");
+
+        downloadFile(csvContent, `discrepancies_${new Date().toISOString().slice(0, 19).replace(/[-:]/g, "").replace("T", "_")}.csv`, "text/csv");
+      }
+
+      function exportToJSON(discrepancies) {
+        const data = {
+          timestamp: new Date().toISOString(),
+          total_discrepancies: discrepancies.length,
+          discrepancies: discrepancies,
+        };
+
+        downloadFile(JSON.stringify(data, null, 2), `discrepancies_${new Date().toISOString().slice(0, 19).replace(/[-:]/g, "").replace("T", "_")}.json`, "application/json");
+      }
+
+      function exportToExcel(sakneenResult, sakneenHeaders, discrepancies) {
+        // Create workbook
+        const wb = XLSX.utils.book_new();
+
+        // Add highlighted Sakneen sheet
+        const sakneenWS = XLSX.utils.aoa_to_sheet(sakneenResult);
+        XLSX.utils.book_append_sheet(wb, sakneenWS, "Sakneen_With_Highlights");
+
+        // Add discrepancies sheet
+        const discrepanciesData = [["Unit ID", "Modon Status", "Sakneen Status", "Issue"], ...discrepancies.map((d) => [d.unit_id, d.modon_status, d.sakneen_status, d.issue])];
+        const discrepanciesWS = XLSX.utils.aoa_to_sheet(discrepanciesData);
+        XLSX.utils.book_append_sheet(wb, discrepanciesWS, "Discrepancies");
+
+        // Download
+        XLSX.writeFile(wb, `sakneen_highlighted_${new Date().toISOString().slice(0, 19).replace(/[-:]/g, "").replace("T", "_")}.xlsx`);
+      }
+
+      // Form submission handler
       document.getElementById("uploadForm").addEventListener("submit", async function (e) {
         e.preventDefault();
 
-        const formData = new FormData();
         const modonFile = document.getElementById("modon_file").files[0];
         const sakneenFile = document.getElementById("sakneen_file").files[0];
 
@@ -388,21 +538,17 @@
           return;
         }
 
-        formData.append("modon_file", modonFile);
-        formData.append("sakneen_file", sakneenFile);
-
         // Show loading
         document.getElementById("loading").style.display = "block";
         document.getElementById("results").style.display = "none";
         document.getElementById("compareBtn").disabled = true;
 
         try {
-          const response = await fetch("/upload", {
-            method: "POST",
-            body: formData,
-          });
+          // Read both files
+          const [modonData, sakneenData] = await Promise.all([readExcelFile(modonFile), readExcelFile(sakneenFile)]);
 
-          const result = await response.json();
+          // Compare the files
+          const result = compareExcelSheets(modonData, sakneenData);
 
           // Hide loading
           document.getElementById("loading").style.display = "none";
@@ -417,8 +563,6 @@
                         <div class="error">
                             <h3>Error</h3>
                             <p>${result.error}</p>
-                            ${result.modon_columns ? `<p><strong>Modon columns found:</strong> ${result.modon_columns.join(", ")}</p>` : ""}
-                            ${result.sakneen_columns ? `<p><strong>Sakneen columns found:</strong> ${result.sakneen_columns.join(", ")}</p>` : ""}
                         </div>
                     `;
           } else if (result.success) {
@@ -433,42 +577,27 @@
               html += "<h3>Discrepancies Found:</h3>";
               result.discrepancies.forEach((discrepancy) => {
                 html += `
-                                 <div class="discrepancy-item">
-                                     <strong>Unit ${discrepancy.unit_id}:</strong> ${discrepancy.issue}
-                                     <br>
-                                     <small>Modon: ${discrepancy.modon_status} | Sakneen: ${discrepancy.sakneen_status}</small>
-                                 </div>
-                             `;
+                                <div class="discrepancy-item">
+                                    <strong>Unit ${discrepancy.unit_id}:</strong> ${discrepancy.issue}
+                                    <br>
+                                    <small>Modon: ${discrepancy.modon_status} | Sakneen: ${discrepancy.sakneen_status}</small>
+                                </div>
+                            `;
               });
+
+              // Add export section
+              html += `
+                            <div class="export-section">
+                                <h4>Export Options:</h4>
+                                <div class="export-buttons">
+                                    <button class="export-btn csv" onclick="exportToCSV(${JSON.stringify(result.discrepancies).replace(/"/g, "&quot;")})">CSV</button>
+                                    <button class="export-btn excel" onclick="exportToExcel(${JSON.stringify(result.sakneenResult).replace(/"/g, "&quot;")}, ${JSON.stringify(result.sakneenHeaders).replace(/"/g, "&quot;")}, ${JSON.stringify(result.discrepancies).replace(/"/g, "&quot;")})">Excel</button>
+                                    <button class="export-btn json" onclick="exportToJSON(${JSON.stringify(result.discrepancies).replace(/"/g, "&quot;")})">JSON</button>
+                                </div>
+                            </div>
+                        `;
             } else {
               html += "<p>No discrepancies found! All units have consistent status.</p>";
-            }
-
-            if (result.output_file) {
-              html += `
-                             <a href="/download/sakneen_highlighted.xlsx" class="download-btn">
-                                 Download Highlighted File
-                             </a>
-                         `;
-            }
-
-            // Add export section if there are discrepancies
-            if (result.discrepancies && result.discrepancies.length > 0 && result.export_files) {
-              // Extract filename from the export_files paths
-              const csvFilename = result.export_files.csv.split("/").pop();
-              const excelFilename = result.export_files.excel.split("/").pop();
-              const jsonFilename = result.export_files.json.split("/").pop();
-
-              html += `
-                 <div class="export-section">
-                   <h4>Export Discrepancies:</h4>
-                   <div class="export-buttons">
-                     <a href="/export/csv/${csvFilename}" class="export-btn csv">CSV</a>
-                     <a href="/export/excel/${excelFilename}" class="export-btn excel">Excel</a>
-                     <a href="/export/json/${jsonFilename}" class="export-btn json">JSON</a>
-                   </div>
-                 </div>
-               `;
             }
 
             resultsDiv.innerHTML = html;
