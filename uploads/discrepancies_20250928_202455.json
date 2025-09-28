@@ -1,0 +1,924 @@
+{
+  "timestamp": "20250928_202455",
+  "total_discrepancies": 153,
+  "discrepancies": [
+    {
+      "unit_id": "WY-WW-38E",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-36D",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-36A",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-35C",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-30F",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-28F",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-28E",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-28D",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-28A",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-27F",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-26F",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-26E",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-26A",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-25F",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-24F",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-24B",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-24A",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-23C",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-23B",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-21B",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-19E",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-19D",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-19C",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-19B",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-17D",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-15D",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-15C",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-15B",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-13E",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-12A",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-11D",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-11C",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-11B",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-07C",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-07B",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-WW-04F",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-C406",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-C403",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-C306",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-C303",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-C207",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-C206",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-C203",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-C107",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-C106",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-C105",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-C006",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-C005",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-C003",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-BL08",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-BL06",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-BL05",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-B408",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-B407",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-B404",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-B207",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-B204",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-B007",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-12-A108",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-11-BL11",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-11-AL03",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-11-A106",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-11-A105",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BO-11-A006",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-04-A405",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-04-A305",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-04-A301",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-04-A201",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-04-A102",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-22-C405",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-22-C308",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-22-C307",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-22-C306",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-22-C208",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-22-C207",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-22-C206",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-22-C205",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-22-C106",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-22-C104",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-19-B405",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-19-B305",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-19-B205",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-19-B105",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-19-A303",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-19-A204",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-19-A203",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-19-A105",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-19-A103",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-D402",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-D302",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-D203",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-D202",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-C507",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-C407",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-C406",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-C401",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-C307",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-C301",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-C207",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-C107",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-B508",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-B409",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-B408",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-B309",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-B209",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-B207",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-B108",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-B107",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-B101",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-A502",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-A402",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-A302",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-A202",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-16-A105",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-15-C313",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-15-C106",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-B504",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-B404",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-B403",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-B304",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-B204",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-B104",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-B103",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-A503",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-A404",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-A403",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-A303",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-A204",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-A105",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-07-A104",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-D205",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-D105",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-C502",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-C402",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-C302",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-B505",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-B406",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-B405",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-B404",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-B306",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-B107",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-B106",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-B105",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-B103",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-A305",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-A303",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-A205",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-A204",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-A203",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-A106",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-A105",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-A104",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    },
+    {
+      "unit_id": "WY-BP-02-A103",
+      "modon_status": "Not Available (has EOI)",
+      "sakneen_status": "Available",
+      "issue": "Unit has EOI in Modon but shows as Available in Sakneen"
+    }
+  ]
+}

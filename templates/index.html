@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Excel Comparison Tool</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        height: 100vh;
+        margin: 0;
+        padding: 10px;
+        overflow: hidden;
+      }
+
+      .container {
+        max-width: 900px;
+        height: calc(100vh - 20px);
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        padding: 15px 20px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      .header h1 {
+        font-size: 1.8em;
+        margin: 0 0 5px 0;
+        font-weight: 300;
+      }
+
+      .header p {
+        font-size: 0.9em;
+        opacity: 0.9;
+        margin: 0;
+      }
+
+      .content {
+        padding: 20px;
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .upload-section {
+        margin-bottom: 15px;
+        flex-shrink: 0;
+      }
+
+      .file-input-group {
+        margin-bottom: 15px;
+        padding: 15px;
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .file-input-group:hover {
+        border-color: #667eea;
+        background-color: #f8f9ff;
+      }
+
+      .file-input-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #2c3e50;
+        font-size: 1em;
+      }
+
+      .file-input-group input[type="file"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 0.9em;
+      }
+
+      .file-info {
+        margin-top: 8px;
+        padding: 8px;
+        background-color: #e8f4f8;
+        border-radius: 5px;
+        font-size: 0.8em;
+        color: #2c3e50;
+      }
+
+      .compare-btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        flex-shrink: 0;
+      }
+
+      .compare-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .compare-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        margin: 10px 0;
+        flex-shrink: 0;
+      }
+
+      .spinner {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #667eea;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 8px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .results {
+        display: none;
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .results h3 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+      }
+
+      .discrepancy-item {
+        background: white;
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        border-left: 3px solid #e74c3c;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        font-size: 0.9em;
+      }
+
+      .discrepancy-item strong {
+        color: #e74c3c;
+      }
+
+      .download-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        margin-top: 10px;
+        transition: all 0.3s ease;
+        font-size: 0.9em;
+      }
+
+      .export-section {
+        margin-top: 15px;
+        padding: 12px;
+        background-color: #f0f8ff;
+        border-radius: 8px;
+        border-left: 3px solid #2196f3;
+      }
+
+      .export-section h4 {
+        color: #1976d2;
+        margin-bottom: 10px;
+        font-size: 1em;
+      }
+
+      .export-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .export-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 0.85em;
+        border: none;
+        cursor: pointer;
+      }
+
+      .export-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3);
+      }
+
+      .export-btn.csv {
+        background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+      }
+
+      .export-btn.excel {
+        background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+      }
+
+      .export-btn.json {
+        background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+      }
+
+      .download-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(39, 174, 96, 0.3);
+      }
+
+      .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 12px;
+        border-radius: 6px;
+        margin-top: 10px;
+        border: 1px solid #f5c6cb;
+        font-size: 0.9em;
+      }
+
+      .success {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 12px;
+        border-radius: 6px;
+        margin-top: 10px;
+        border: 1px solid #c3e6cb;
+        font-size: 0.9em;
+      }
+
+      .instructions {
+        background-color: #e3f2fd;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border-left: 3px solid #2196f3;
+        flex-shrink: 0;
+      }
+
+      .instructions h3 {
+        color: #1976d2;
+        margin-bottom: 8px;
+        font-size: 1em;
+      }
+
+      .instructions ul {
+        margin-left: 15px;
+        margin-bottom: 0;
+      }
+
+      .instructions li {
+        margin-bottom: 3px;
+        color: #2c3e50;
+        font-size: 0.85em;
+      }
+
+      /* Responsive design for smaller screens */
+      @media (max-height: 600px) {
+        .header {
+          padding: 10px 20px;
+        }
+        .header h1 {
+          font-size: 1.5em;
+        }
+        .header p {
+          font-size: 0.8em;
+        }
+        .content {
+          padding: 15px;
+        }
+        .instructions {
+          padding: 8px;
+          margin-bottom: 10px;
+        }
+        .file-input-group {
+          padding: 10px;
+          margin-bottom: 10px;
+        }
+        .compare-btn {
+          padding: 10px;
+          margin-top: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Excel Comparison Tool</h1>
+        <p>Compare Modon and Sakneen Excel sheets for status discrepancies</p>
+      </div>
+
+      <div class="content">
+        <div class="instructions">
+          <h3>How it works:</h3>
+          <ul>
+            <li>Upload Modon Excel (headers at row 3) and Sakneen Excel (headers at row 1)</li>
+            <li>Compare Unit Number (Modon) with UnitID (Sakneen)</li>
+            <li>Highlight units with EOI in Modon but "Available" in Sakneen</li>
+            <li>Download the highlighted Sakneen file</li>
+          </ul>
+        </div>
+
+        <form id="uploadForm" enctype="multipart/form-data">
+          <div class="upload-section">
+            <div class="file-input-group">
+              <label for="modon_file">Modon Excel File</label>
+              <input type="file" id="modon_file" name="modon_file" accept=".xlsx,.xls" required />
+              <div class="file-info">Columns: "Unit Number" and "EOI" (headers at row 3)</div>
+            </div>
+
+            <div class="file-input-group">
+              <label for="sakneen_file">Sakneen Excel File</label>
+              <input type="file" id="sakneen_file" name="sakneen_file" accept=".xlsx,.xls" required />
+              <div class="file-info">Columns: "UnitID" and "Status" (headers at row 1)</div>
+            </div>
+          </div>
+
+          <button type="submit" class="compare-btn" id="compareBtn">Compare Files</button>
+        </form>
+
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          <p>Processing...</p>
+        </div>
+
+        <div class="results" id="results"></div>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData();
+        const modonFile = document.getElementById("modon_file").files[0];
+        const sakneenFile = document.getElementById("sakneen_file").files[0];
+
+        if (!modonFile || !sakneenFile) {
+          alert("Please select both files");
+          return;
+        }
+
+        formData.append("modon_file", modonFile);
+        formData.append("sakneen_file", sakneenFile);
+
+        // Show loading
+        document.getElementById("loading").style.display = "block";
+        document.getElementById("results").style.display = "none";
+        document.getElementById("compareBtn").disabled = true;
+
+        try {
+          const response = await fetch("/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          const result = await response.json();
+
+          // Hide loading
+          document.getElementById("loading").style.display = "none";
+          document.getElementById("compareBtn").disabled = false;
+
+          // Show results
+          const resultsDiv = document.getElementById("results");
+          resultsDiv.style.display = "block";
+
+          if (result.error) {
+            resultsDiv.innerHTML = `
+                        <div class="error">
+                            <h3>Error</h3>
+                            <p>${result.error}</p>
+                            ${result.modon_columns ? `<p><strong>Modon columns found:</strong> ${result.modon_columns.join(", ")}</p>` : ""}
+                            ${result.sakneen_columns ? `<p><strong>Sakneen columns found:</strong> ${result.sakneen_columns.join(", ")}</p>` : ""}
+                        </div>
+                    `;
+          } else if (result.success) {
+            let html = `
+                        <div class="success">
+                            <h3>Comparison Complete!</h3>
+                            <p>Found <strong>${result.total_discrepancies}</strong> discrepancies</p>
+                        </div>
+                    `;
+
+            if (result.discrepancies && result.discrepancies.length > 0) {
+              html += "<h3>Discrepancies Found:</h3>";
+              result.discrepancies.forEach((discrepancy) => {
+                html += `
+                                 <div class="discrepancy-item">
+                                     <strong>Unit ${discrepancy.unit_id}:</strong> ${discrepancy.issue}
+                                     <br>
+                                     <small>Modon: ${discrepancy.modon_status} | Sakneen: ${discrepancy.sakneen_status}</small>
+                                 </div>
+                             `;
+              });
+            } else {
+              html += "<p>No discrepancies found! All units have consistent status.</p>";
+            }
+
+            if (result.output_file) {
+              html += `
+                             <a href="/download/sakneen_highlighted.xlsx" class="download-btn">
+                                 Download Highlighted File
+                             </a>
+                         `;
+            }
+
+            // Add export section if there are discrepancies
+            if (result.discrepancies && result.discrepancies.length > 0 && result.export_files) {
+              // Extract filename from the export_files paths
+              const csvFilename = result.export_files.csv.split("/").pop();
+              const excelFilename = result.export_files.excel.split("/").pop();
+              const jsonFilename = result.export_files.json.split("/").pop();
+
+              html += `
+                 <div class="export-section">
+                   <h4>Export Discrepancies:</h4>
+                   <div class="export-buttons">
+                     <a href="/export/csv/${csvFilename}" class="export-btn csv">CSV</a>
+                     <a href="/export/excel/${excelFilename}" class="export-btn excel">Excel</a>
+                     <a href="/export/json/${jsonFilename}" class="export-btn json">JSON</a>
+                   </div>
+                 </div>
+               `;
+            }
+
+            resultsDiv.innerHTML = html;
+          }
+        } catch (error) {
+          document.getElementById("loading").style.display = "none";
+          document.getElementById("compareBtn").disabled = false;
+          document.getElementById("results").innerHTML = `
+                    <div class="error">
+                        <h3>Error</h3>
+                        <p>Failed to process files: ${error.message}</p>
+                    </div>
+                `;
+          document.getElementById("results").style.display = "block";
+        }
+      });
+    </script>
+  </body>
+</html>
