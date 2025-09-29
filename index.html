@@ -40,21 +40,37 @@
       .header {
         background: linear-gradient(135deg, #1d1d1f 0%, #2c2c2e 100%);
         color: white;
-        padding: 24px 32px;
-        text-align: center;
+        padding: 14px 20px;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
         flex-shrink: 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
 
+      .header > div:first-child {
+        grid-column: 2;
+        text-align: center;
+      }
+
+      .header-actions {
+        grid-column: 3;
+        justify-self: end;
+      }
+
+      .header .howitworks {
+        margin-bottom: 0;
+      }
+
       .header h1 {
-        font-size: 2.2em;
-        margin: 0 0 8px 0;
+        font-size: 1.6em;
+        margin: 0 0 4px 0;
         font-weight: 600;
         letter-spacing: -0.5px;
       }
 
       .header p {
-        font-size: 1.1em;
+        font-size: 0.95em;
         opacity: 0.8;
         margin: 0;
         font-weight: 400;
@@ -655,6 +671,38 @@
         backdrop-filter: blur(10px);
       }
 
+      /* Header actions */
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .header .tooltip-button {
+        background: #000;
+        color: #fff;
+      }
+
+      /* Primary small button (header actions) */
+      .btn-sm {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .btn-sm:hover {
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateY(-1px);
+      }
+
       /* Tooltip styles for How it works */
       .howitworks {
         position: relative;
@@ -678,19 +726,7 @@
       }
 
       .tooltip-content {
-        position: absolute;
-        top: 40px;
-        left: 0;
-        width: 280px;
-        max-width: calc(100vw - 60px);
-        background: rgba(255, 255, 255, 0.95);
-        border: 1px solid rgba(0, 122, 255, 0.15);
-        border-radius: 16px;
-        padding: 16px 18px;
-        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
-        backdrop-filter: blur(16px);
         display: none;
-        z-index: 5;
       }
 
       .howitworks:hover .tooltip-content,
@@ -735,26 +771,233 @@
           height: calc(100vh - 20px);
         }
 
+        .header {
+          display: flex;
+          flex-direction: column;
+          text-align: center;
+          gap: 4px;
+        }
+
+        .header {
+          padding: 10px 14px;
+        }
+
+        .header h1 {
+          font-size: 1.3em;
+          margin-bottom: 2px;
+        }
+
+        .header p {
+          font-size: 0.85em;
+        }
+
         .main-content {
           flex-direction: column;
         }
 
         .upload-panel {
           width: 100%;
-          padding: 20px;
+          padding: 16px;
         }
 
         .upload-panel.compressed {
           width: 100%;
-          padding: 20px;
+          padding: 16px;
         }
 
         .results-panel {
-          padding: 20px;
+          padding: 16px;
         }
 
         .results-panel.expanded {
-          padding: 20px;
+          padding: 16px;
+        }
+
+        .summary-card {
+          position: static;
+          margin-bottom: 12px;
+        }
+
+        .summary-title {
+          font-size: 1.1em;
+        }
+
+        .summary-subtitle {
+          font-size: 0.9em;
+        }
+
+        .summary-actions {
+          gap: 6px;
+        }
+
+        .export-btn,
+        .compare-btn {
+          padding: 10px 14px;
+          font-size: 0.9em;
+        }
+
+        .id-grid {
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+          gap: 6px;
+        }
+
+        .discrepancy-item {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+
+        .status-labels {
+          width: 100%;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+          gap: 6px;
+        }
+
+        .status-label {
+          font-size: 10px;
+          padding: 3px 6px;
+        }
+      }
+
+      /* Drag & drop upload cards */
+      .file-input-group.droppable {
+        border-style: solid;
+        border-color: rgba(0, 122, 255, 0.35);
+        background: rgba(0, 122, 255, 0.06);
+      }
+
+      .file-input-group .helper {
+        margin-top: 10px;
+        font-size: 0.85em;
+        color: #3a3a3c;
+        opacity: 0.9;
+      }
+
+      /* Fullscreen Help modal */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(6px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      .modal-overlay.show {
+        display: flex;
+      }
+
+      .modal-dialog {
+        width: min(820px, calc(100vw - 40px));
+        max-height: calc(100vh - 80px);
+        overflow: auto;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(245, 247, 250, 0.98));
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 20px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+        padding: 22px 22px 18px 22px;
+      }
+
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .modal-title {
+        font-size: 1.4em;
+        font-weight: 700;
+        color: #1d1d1f;
+        margin: 0;
+      }
+
+      .modal-close {
+        border: none;
+        background: rgba(0, 0, 0, 0.06);
+        color: #1d1d1f;
+        border-radius: 10px;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .modal-section {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: 14px;
+        padding: 14px 16px;
+        margin-top: 10px;
+      }
+
+      /* Results toolbar */
+      .results-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        padding: 10px 12px;
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+
+      .search-input {
+        flex: 1;
+        min-width: 220px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      /* Loading overlay */
+      .loading-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(6px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        z-index: 1100;
+      }
+
+      .loading-overlay.show {
+        display: flex;
+      }
+
+      .progress {
+        width: 260px;
+        height: 8px;
+        background: rgba(0, 0, 0, 0.08);
+        border-radius: 999px;
+        overflow: hidden;
+        margin-top: 12px;
+      }
+
+      .progress-bar {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, #007aff, #5856d6);
+        transition: width 0.2s ease;
+      }
+
+      /* Mid-size screens: place upload inputs side-by-side to reduce height */
+      @media (min-width: 900px) and (max-width: 1280px) {
+        .upload-section {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 16px;
         }
       }
 
@@ -792,27 +1035,17 @@
   <body>
     <div class="container">
       <div class="header">
-        <h1>Excel Comparison Tool</h1>
-        <p>Compare Modon and Sakneen Excel sheets for status discrepancies</p>
+        <div>
+          <h1>Excel Comparison Tool</h1>
+          <p>Compare Modon and Sakneen Excel sheets for status discrepancies</p>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="btn-sm" id="openHelpBtn" aria-haspopup="dialog" aria-controls="helpModal">Help ⌘/</button>
+        </div>
       </div>
 
       <div class="main-content">
         <div class="upload-panel" id="uploadPanel">
-          <div class="howitworks" id="howItWorks">
-            <button type="button" class="tooltip-button" aria-label="How it works" title="How it works">i</button>
-            <div class="tooltip-content" role="dialog" aria-modal="false">
-              <div class="instructions">
-                <h3>How it works</h3>
-                <ul>
-                  <li>Upload Modon Excel (headers at row 3) and Sakneen Excel (headers at row 1)</li>
-                  <li>Compare Unit Number (Modon) with UnitID (Sakneen)</li>
-                  <li>Highlight units with EOI in Modon but "Available" in Sakneen</li>
-                  <li>Download the highlighted Sakneen file</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
           <form id="uploadForm" enctype="multipart/form-data">
             <div class="upload-section">
               <div class="file-input-group" id="modonGroup">
@@ -838,13 +1071,57 @@
         </div>
 
         <div class="results-panel" id="resultsPanel">
+          <div class="results-toolbar" id="resultsToolbar" style="display: none">
+            <input type="search" id="searchInput" class="search-input" placeholder="Search unit IDs or text (⌘K)" aria-label="Search results" />
+            <div style="display: flex; gap: 8px">
+              <button class="export-btn csv" id="exportCsvBtnTop">CSV</button>
+              <button class="export-btn excel" id="exportExcelBtnTop">Excel</button>
+              <button class="export-btn json" id="exportJsonBtnTop">JSON</button>
+            </div>
+          </div>
           <div class="results" id="results"></div>
         </div>
       </div>
     </div>
 
     <!-- Version indicator -->
-    <div style="position: fixed; bottom: 8px; right: 8px; font-size: 10px; color: #666; background: rgba(255, 255, 255, 0.8); padding: 2px 6px; border-radius: 4px; z-index: 1000">v1.0.8</div>
+    <div style="position: fixed; bottom: 8px; right: 8px; font-size: 10px; color: #666; background: rgba(255, 255, 255, 0.8); padding: 2px 6px; border-radius: 4px; z-index: 1000">v1.0.10</div>
+
+    <!-- Help Modal -->
+    <div class="modal-overlay" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h2 class="modal-title" id="helpTitle">How it works</h2>
+          <button class="modal-close" id="closeHelpBtn" aria-label="Close">×</button>
+        </div>
+        <div class="modal-section">
+          <h3 style="margin: 0 0 8px 0; font-size: 1.05em">Steps</h3>
+          <ul style="margin-left: 16px">
+            <li>Upload Modon Excel (headers at row 3) and Sakneen Excel (headers at row 1)</li>
+            <li>Compare Unit Number (Modon) with UnitID (Sakneen)</li>
+            <li>Unit unavailable in Modon if EOI or Sales Agent has value</li>
+            <li>Download the highlighted Sakneen file</li>
+          </ul>
+        </div>
+        <div class="modal-section">
+          <h3 style="margin: 0 0 8px 0; font-size: 1.05em">Shortcuts</h3>
+          <ul style="margin-left: 16px">
+            <li>Open Help: ⌘/</li>
+            <li>Focus Search: ⌘K</li>
+            <li>Close Modal: Esc</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" aria-live="polite" aria-busy="true">
+      <div class="spinner"></div>
+      <div style="margin-top: 8px; font-weight: 600; color: #1d1d1f">Processing...</div>
+      <div class="progress" aria-label="Progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
 
     <script>
       // Excel processing functions
@@ -1145,16 +1422,30 @@
       });
 
       // Toggle tooltip on click for accessibility and mobile
-      const howItWorks = document.getElementById("howItWorks");
-      const tooltipBtn = howItWorks.querySelector(".tooltip-button");
-      tooltipBtn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        howItWorks.classList.toggle("open");
-      });
-      // Close tooltip when clicking outside
-      document.addEventListener("click", function () {
-        howItWorks.classList.remove("open");
-      });
+      // Replaced tooltip with a Help modal
+      const helpModal = document.getElementById("helpModal");
+      const openHelpBtn = document.getElementById("openHelpBtn");
+      const closeHelpBtn = document.getElementById("closeHelpBtn");
+      function openHelp() {
+        helpModal.classList.add("show");
+        setTimeout(() => {
+          // focus first interactive element for a11y
+          closeHelpBtn && closeHelpBtn.focus();
+        }, 0);
+      }
+      function closeHelp() {
+        helpModal.classList.remove("show");
+      }
+      openHelpBtn &&
+        openHelpBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          openHelp();
+        });
+      closeHelpBtn && closeHelpBtn.addEventListener("click", closeHelp);
+      helpModal &&
+        helpModal.addEventListener("click", (e) => {
+          if (e.target === helpModal) closeHelp();
+        });
 
       // Form submission handler
       document.getElementById("uploadForm").addEventListener("submit", async function (e) {
@@ -1170,6 +1461,10 @@
 
         // Show loading and compress upload panel
         document.getElementById("loading").style.display = "block";
+        const overlay = document.getElementById("loadingOverlay");
+        const progressBar = document.getElementById("progressBar");
+        if (overlay) overlay.classList.add("show");
+        if (progressBar) progressBar.style.width = "10%";
         document.getElementById("results").style.display = "none";
         document.getElementById("compareBtn").disabled = true;
         document.getElementById("uploadPanel").classList.add("compressed");
@@ -1177,14 +1472,32 @@
 
         try {
           // Read both files and Modon EOI cell background styles
-          const [modonData, sakneenData, modonWhiteEOIUnits] = await Promise.all([readExcelFile(modonFile), readExcelFile(sakneenFile), readModonEOIStyles(modonFile)]);
+          const [modonData, sakneenData, modonWhiteEOIUnits] = await Promise.all([
+            (async () => {
+              const d = await readExcelFile(modonFile);
+              if (progressBar) progressBar.style.width = "40%";
+              return d;
+            })(),
+            (async () => {
+              const d = await readExcelFile(sakneenFile);
+              if (progressBar) progressBar.style.width = "70%";
+              return d;
+            })(),
+            (async () => {
+              const d = await readModonEOIStyles(modonFile);
+              return d;
+            })(),
+          ]);
 
           // Compare the files
           const result = compareExcelSheets(modonData, sakneenData, modonWhiteEOIUnits);
+          if (progressBar) progressBar.style.width = "90%";
 
           // Hide loading and show results
           document.getElementById("loading").style.display = "none";
           document.getElementById("compareBtn").disabled = false;
+          if (overlay) overlay.classList.remove("show");
+          if (progressBar) progressBar.style.width = "100%";
 
           // Show results
           const resultsDiv = document.getElementById("results");
@@ -1206,14 +1519,9 @@
                     <div class="summary-subtitle">Found ${result.total_discrepancies} discrepancies</div>
                   </div>
                   <div class="summary-actions">
-                    <button class="export-btn csv" id="exportCsvBtn">CSV</button>
-                    <button class="export-btn excel" id="exportExcelBtn">Excel</button>
-                    <button class="export-btn json" id="exportJsonBtn">JSON</button>
+                    <div class="summary-stat">Modon Available: <strong>${result.modonAvailableCount}</strong></div>
+                    <div class="summary-stat">Sakneen Available: <strong>${result.sakneenAvailableCount}</strong></div>
                   </div>
-                </div>
-                <div class="summary-stats">
-                  <div class="summary-stat">Modon Available: <strong>${result.modonAvailableCount}</strong></div>
-                  <div class="summary-stat">Sakneen Available: <strong>${result.sakneenAvailableCount}</strong></div>
                 </div>
               </div>
             `;
@@ -1341,6 +1649,10 @@
             resultsDiv.innerHTML = html;
             document.getElementById("tab-discrepancies").innerHTML = buildDiscrepanciesHTML();
 
+            // Reveal results toolbar
+            const toolbar = document.getElementById("resultsToolbar");
+            if (toolbar) toolbar.style.display = "flex";
+
             // Copy handlers for unit IDs
             Array.from(document.querySelectorAll(".copy-btn")).forEach((btn) => {
               btn.addEventListener("click", async function (ev) {
@@ -1408,20 +1720,37 @@
               });
             });
 
-            // Wire export buttons
-            document.getElementById("exportCsvBtn").onclick = function () {
-              exportToCSV(result.discrepancies);
-            };
-            document.getElementById("exportExcelBtn").onclick = function () {
-              exportToExcel(result.sakneenResult, result.sakneenHeaders, result.discrepancies);
-            };
-            document.getElementById("exportJsonBtn").onclick = function () {
-              exportToJSON(result.discrepancies);
-            };
+            // Summary export buttons removed; using toolbar buttons only
+
+            // Top toolbar export buttons
+            const exportCsvTop = document.getElementById("exportCsvBtnTop");
+            const exportExcelTop = document.getElementById("exportExcelBtnTop");
+            const exportJsonTop = document.getElementById("exportJsonBtnTop");
+            if (exportCsvTop) exportCsvTop.onclick = () => exportToCSV(result.discrepancies);
+            if (exportExcelTop) exportExcelTop.onclick = () => exportToExcel(result.sakneenResult, result.sakneenHeaders, result.discrepancies);
+            if (exportJsonTop) exportJsonTop.onclick = () => exportToJSON(result.discrepancies);
+
+            // Search filter for results
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) {
+              searchInput.addEventListener("input", () => {
+                const q = searchInput.value.trim().toLowerCase();
+                // Filter discrepancies list only for simplicity
+                const container = document.getElementById("tab-discrepancies");
+                if (!container) return;
+                const items = container.querySelectorAll(".discrepancy-item");
+                items.forEach((el) => {
+                  const text = el.textContent.toLowerCase();
+                  el.style.display = text.includes(q) ? "flex" : "none";
+                });
+              });
+            }
           }
         } catch (error) {
           document.getElementById("loading").style.display = "none";
           document.getElementById("compareBtn").disabled = false;
+          const overlay = document.getElementById("loadingOverlay");
+          if (overlay) overlay.classList.remove("show");
           document.getElementById("uploadPanel").classList.remove("compressed");
           document.getElementById("resultsPanel").classList.remove("expanded");
           document.getElementById("results").innerHTML = `
@@ -1431,6 +1760,57 @@
                      </div>
                  `;
           document.getElementById("results").style.display = "block";
+        }
+      });
+
+      // Drag & Drop for file inputs
+      function enableDnD(inputId, groupId) {
+        const group = document.getElementById(groupId);
+        if (!group) return;
+        ["dragenter", "dragover"].forEach((ev) =>
+          group.addEventListener(ev, (e) => {
+            e.preventDefault();
+            group.classList.add("droppable");
+          })
+        );
+        ["dragleave", "drop"].forEach((ev) =>
+          group.addEventListener(ev, (e) => {
+            e.preventDefault();
+            group.classList.remove("droppable");
+          })
+        );
+        group.addEventListener("drop", (e) => {
+          const files = e.dataTransfer?.files;
+          if (!files || !files.length) return;
+          const input = document.getElementById(inputId);
+          if (input) {
+            input.files = files;
+            input.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+        });
+      }
+      enableDnD("modon_file", "modonGroup");
+      enableDnD("sakneen_file", "sakneenGroup");
+
+      // Keyboard shortcuts
+      document.addEventListener("keydown", (e) => {
+        const meta = e.metaKey || e.ctrlKey;
+        // ⌘/ - open help
+        if (meta && e.key === "/") {
+          e.preventDefault();
+          openHelp();
+        }
+        // Esc - close help
+        if (e.key === "Escape") {
+          closeHelp();
+        }
+        // ⌘k - focus search
+        if (meta && e.key.toLowerCase() === "k") {
+          const input = document.getElementById("searchInput");
+          if (input && input.offsetParent !== null) {
+            e.preventDefault();
+            input.focus();
+          }
         }
       });
     </script>
