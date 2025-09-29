@@ -844,7 +844,7 @@
     </div>
 
     <!-- Version indicator -->
-    <div style="position: fixed; bottom: 8px; right: 8px; font-size: 10px; color: #666; background: rgba(255, 255, 255, 0.8); padding: 2px 6px; border-radius: 4px; z-index: 1000">v1.0.2</div>
+    <div style="position: fixed; bottom: 8px; right: 8px; font-size: 10px; color: #666; background: rgba(255, 255, 255, 0.8); padding: 2px 6px; border-radius: 4px; z-index: 1000">v1.0.3</div>
 
     <script>
       // Excel processing functions
@@ -1300,6 +1300,7 @@
               result.discrepancies.forEach((discrepancy) => {
                 // Helper function to get status class
                 const getStatusClass = (status) => {
+                  if (status.toLowerCase().includes("eoi")) return "status-unavailable";
                   if (status.toLowerCase().includes("available")) return "status-available";
                   if (status.toLowerCase().includes("blocked")) return "status-blocked";
                   return "status-unavailable";
@@ -1307,6 +1308,7 @@
 
                 // Helper function to get status text
                 const getStatusText = (status) => {
+                  if (status.toLowerCase().includes("eoi")) return "Unavailable";
                   if (status.toLowerCase().includes("available")) return "Available";
                   if (status.toLowerCase().includes("blocked")) return "Blocked";
                   return "Unavailable";
