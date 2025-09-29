@@ -844,7 +844,7 @@
     </div>
 
     <!-- Version indicator -->
-    <div style="position: fixed; bottom: 8px; right: 8px; font-size: 10px; color: #666; background: rgba(255, 255, 255, 0.8); padding: 2px 6px; border-radius: 4px; z-index: 1000">v1.0.3</div>
+    <div style="position: fixed; bottom: 8px; right: 8px; font-size: 10px; color: #666; background: rgba(255, 255, 255, 0.8); padding: 2px 6px; border-radius: 4px; z-index: 1000">v1.0.8</div>
 
     <script>
       // Excel processing functions
@@ -936,13 +936,14 @@
           const modonHeaders = modonData[2];
           const modonUnitCol = findColumnIndex(modonHeaders, ["unit number"]);
           const modonEoiCol = findColumnIndex(modonHeaders, ["eoi"]);
+          const modonSalesAgentCol = findColumnIndex(modonHeaders, ["sales agent", "sales_agent"]);
 
           // Read Sakneen sheet (headers at row 1, index 0)
           const sakneenHeaders = sakneenData[0];
           const sakneenUnitCol = findColumnIndex(sakneenHeaders, ["unitid", "unit id"]);
           const sakneenStatusCol = findColumnIndex(sakneenHeaders, ["status"]);
 
-          if (modonUnitCol === -1 || modonEoiCol === -1 || sakneenUnitCol === -1 || sakneenStatusCol === -1) {
+          if (modonUnitCol === -1 || modonEoiCol === -1 || modonSalesAgentCol === -1 || sakneenUnitCol === -1 || sakneenStatusCol === -1) {
             throw new Error("Required columns not found. Please check your Excel files.");
           }
 
@@ -953,8 +954,11 @@
             if (row[modonUnitCol]) {
               const unitNumber = row[modonUnitCol].toString().trim();
               const eoiValue = row[modonEoiCol];
+              const salesAgentValue = row[modonSalesAgentCol];
               const hasEoi = eoiValue !== null && eoiValue !== undefined && eoiValue.toString().trim() !== "";
-              modonMapping[unitNumber] = hasEoi;
+              const hasSalesAgent = salesAgentValue !== null && salesAgentValue !== undefined && salesAgentValue.toString().trim() !== "";
+              const isAvailable = !hasEoi && !hasSalesAgent;
+              modonMapping[unitNumber] = isAvailable;
             }
           }
 
@@ -967,10 +971,10 @@
           const modonAvailableSet = new Set();
           const modonAvailableCommon = [];
 
-          // Build Modon available list from mapping (EOI empty) AND EOI cell fill is white
+          // Build Modon available list from mapping (EOI empty AND Sales Agent empty) AND EOI cell fill is white
           const whiteSet = new Set(modonWhiteEOIUnits || []);
-          for (const [unitId, hasEoi] of Object.entries(modonMapping)) {
-            if (!hasEoi && (whiteSet.size === 0 || whiteSet.has(unitId))) {
+          for (const [unitId, isAvailable] of Object.entries(modonMapping)) {
+            if (isAvailable && (whiteSet.size === 0 || whiteSet.has(unitId))) {
               modonAvailableSet.add(unitId);
             }
           }
@@ -983,31 +987,31 @@
               sakneenUnitSet.add(unitId);
 
               if (modonMapping.hasOwnProperty(unitId)) {
-                const hasEoi = modonMapping[unitId];
+                const isModonAvailable = modonMapping[unitId];
                 const isSakneenAvailable = status.toLowerCase() === "available";
                 if (isSakneenAvailable) {
                   sakneenAvailableSet.add(unitId);
                   sakneenAvailableCommon.push(unitId);
                 }
 
-                // Existing rule: Modon has EOI but Sakneen Available
-                if (hasEoi && isSakneenAvailable) {
+                // Existing rule: Modon not available (has EOI or Sales Agent) but Sakneen Available
+                if (!isModonAvailable && isSakneenAvailable) {
                   discrepancies.push({
                     unit_id: unitId,
-                    modon_status: "Not Available (has EOI)",
+                    modon_status: "Not Available (has EOI or Sales Agent)",
                     sakneen_status: status,
-                    issue: "EOI in Modon but Available in Sakneen",
+                    issue: "EOI or Sales Agent in Modon but Available in Sakneen",
                   });
                   if (!sakneenResult[i]._highlight) sakneenResult[i]._highlight = true;
                 }
 
-                // New rule: Modon available (EOI empty) but Sakneen not Available
-                if (!hasEoi && (whiteSet.size === 0 || whiteSet.has(unitId))) {
+                // New rule: Modon available (EOI empty AND Sales Agent empty) but Sakneen not Available
+                if (isModonAvailable && (whiteSet.size === 0 || whiteSet.has(unitId))) {
                   modonAvailableCommon.push(unitId);
                   if (!isSakneenAvailable) {
                     discrepancies.push({
                       unit_id: unitId,
-                      modon_status: "Available (no EOI)",
+                      modon_status: "Available (no EOI or Sales Agent)",
                       sakneen_status: status,
                       issue: "Available in Modon but not Available in Sakneen",
                     });
@@ -1300,17 +1304,20 @@
               result.discrepancies.forEach((discrepancy) => {
                 // Helper function to get status class
                 const getStatusClass = (status) => {
-                  if (status.toLowerCase().includes("eoi")) return "status-unavailable";
-                  if (status.toLowerCase().includes("available")) return "status-available";
-                  if (status.toLowerCase().includes("blocked")) return "status-blocked";
+                  const s = (status || "").toString().toLowerCase();
+                  if (s.includes("blocked") || s.includes("not available") || s.includes("unavailable") || s.includes("eoi") || s.includes("sales agent")) {
+                    return "status-unavailable";
+                  }
+                  if (s.includes("available")) return "status-available";
                   return "status-unavailable";
                 };
 
                 // Helper function to get status text
                 const getStatusText = (status) => {
-                  if (status.toLowerCase().includes("eoi")) return "Unavailable";
-                  if (status.toLowerCase().includes("available")) return "Available";
-                  if (status.toLowerCase().includes("blocked")) return "Blocked";
+                  const s = (status || "").toString().toLowerCase();
+                  if (s.includes("blocked")) return "Blocked";
+                  if (s.includes("not available") || s.includes("unavailable") || s.includes("eoi") || s.includes("sales agent")) return "Unavailable";
+                  if (s.includes("available")) return "Available";
                   return "Unavailable";
                 };
 
