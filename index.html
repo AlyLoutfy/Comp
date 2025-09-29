@@ -13,139 +13,200 @@
       }
 
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         height: 100vh;
         margin: 0;
-        padding: 10px;
+        padding: 0;
         overflow: hidden;
       }
 
       .container {
-        max-width: 900px;
-        height: calc(100vh - 20px);
+        max-width: 1400px;
+        height: 100vh;
         margin: 0 auto;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
         overflow: hidden;
         display: flex;
         flex-direction: column;
+        margin: 20px auto;
+        height: calc(100vh - 40px);
       }
 
       .header {
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        background: linear-gradient(135deg, #1d1d1f 0%, #2c2c2e 100%);
         color: white;
-        padding: 15px 20px;
+        padding: 24px 32px;
         text-align: center;
         flex-shrink: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .header h1 {
-        font-size: 1.8em;
-        margin: 0 0 5px 0;
-        font-weight: 300;
+        font-size: 2.2em;
+        margin: 0 0 8px 0;
+        font-weight: 600;
+        letter-spacing: -0.5px;
       }
 
       .header p {
-        font-size: 0.9em;
-        opacity: 0.9;
+        font-size: 1.1em;
+        opacity: 0.8;
         margin: 0;
+        font-weight: 400;
       }
 
-      .content {
-        padding: 20px;
+      .main-content {
         flex: 1;
-        overflow-y: auto;
+        display: flex;
+        overflow: hidden;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .upload-panel {
+        width: 400px;
+        background: rgba(248, 249, 250, 0.8);
+        border-right: 1px solid rgba(0, 0, 0, 0.06);
+        padding: 32px;
         display: flex;
         flex-direction: column;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(10px);
+        position: relative;
+      }
+
+      .upload-panel.compressed {
+        width: 300px;
+        padding: 24px;
+      }
+
+      .results-panel {
+        flex: 1;
+        padding: 32px;
+        overflow-y: auto;
+        background: rgba(255, 255, 255, 0.6);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .results-panel.expanded {
+        padding: 32px;
       }
 
       .upload-section {
-        margin-bottom: 15px;
+        margin-bottom: 24px;
         flex-shrink: 0;
       }
 
       .file-input-group {
-        margin-bottom: 15px;
-        padding: 15px;
-        border: 2px dashed #ddd;
-        border-radius: 8px;
-        transition: all 0.3s ease;
+        margin-bottom: 20px;
+        padding: 20px;
+        border: 2px dashed rgba(0, 122, 255, 0.3);
+        border-radius: 16px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
       }
 
       .file-input-group:hover {
-        border-color: #667eea;
-        background-color: #f8f9ff;
+        border-color: rgba(0, 122, 255, 0.6);
+        background: rgba(0, 122, 255, 0.05);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 122, 255, 0.15);
+      }
+
+      .file-input-group.has-file {
+        border-color: #34c759;
+        background: rgba(52, 199, 89, 0.05);
       }
 
       .file-input-group label {
         display: block;
         font-weight: 600;
-        margin-bottom: 8px;
-        color: #2c3e50;
-        font-size: 1em;
+        margin-bottom: 12px;
+        color: #1d1d1f;
+        font-size: 1.1em;
+        letter-spacing: -0.2px;
       }
 
       .file-input-group input[type="file"] {
         width: 100%;
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 0.9em;
+        padding: 12px 16px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        font-size: 0.95em;
+        background: rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+      }
+
+      .file-input-group input[type="file"]:focus {
+        outline: none;
+        border-color: #007aff;
+        box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
       }
 
       .file-info {
-        margin-top: 8px;
-        padding: 8px;
-        background-color: #e8f4f8;
-        border-radius: 5px;
-        font-size: 0.8em;
-        color: #2c3e50;
+        margin-top: 12px;
+        padding: 12px 16px;
+        background: rgba(0, 122, 255, 0.08);
+        border-radius: 12px;
+        font-size: 0.85em;
+        color: #1d1d1f;
+        border-left: 3px solid #007aff;
       }
 
       .compare-btn {
         width: 100%;
-        padding: 12px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 16px 24px;
+        background: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
         color: white;
         border: none;
-        border-radius: 8px;
-        font-size: 1em;
+        border-radius: 16px;
+        font-size: 1.1em;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.3s ease;
-        margin-top: 10px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-top: 24px;
         flex-shrink: 0;
+        letter-spacing: -0.2px;
+        box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
       }
 
       .compare-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(0, 122, 255, 0.4);
+        background: linear-gradient(135deg, #0056cc 0%, #4c46c7 100%);
+      }
+
+      .compare-btn:active {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(0, 122, 255, 0.3);
       }
 
       .compare-btn:disabled {
-        background: #ccc;
+        background: linear-gradient(135deg, #8e8e93 0%, #aeaeb2 100%);
         cursor: not-allowed;
         transform: none;
-        box-shadow: none;
+        box-shadow: 0 2px 8px rgba(142, 142, 147, 0.3);
       }
 
       .loading {
         display: none;
         text-align: center;
-        margin: 10px 0;
+        margin: 24px 0;
         flex-shrink: 0;
       }
 
       .spinner {
-        border: 3px solid #f3f3f3;
-        border-top: 3px solid #667eea;
+        border: 3px solid rgba(0, 122, 255, 0.1);
+        border-top: 3px solid #007aff;
         border-radius: 50%;
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
         animation: spin 1s linear infinite;
-        margin: 0 auto 8px;
+        margin: 0 auto 16px;
       }
 
       @keyframes spin {
@@ -159,174 +220,397 @@
 
       .results {
         display: none;
-        margin-top: 15px;
-        padding: 15px;
-        background-color: #f8f9fa;
-        border-radius: 8px;
+        margin-top: 0;
+        padding: 0;
+        background: transparent;
+        border-radius: 0;
         flex: 1;
         overflow-y: auto;
       }
 
       .results h3 {
-        color: #2c3e50;
-        margin-bottom: 10px;
-        font-size: 1.1em;
+        color: #1d1d1f;
+        margin-bottom: 20px;
+        font-size: 1.4em;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+      }
+
+      /* Simple accordion */
+      .accordion-section {
+        margin: 8px 0 6px 0;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      .accordion-toggle {
+        width: 100%;
+        text-align: left;
+        padding: 10px 12px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        color: #1d1d1f;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.95em;
+      }
+
+      .accordion-content {
+        display: none;
+        padding: 8px 12px 12px 12px;
+        max-height: 160px;
+        overflow: auto;
+      }
+
+      .accordion-section.open .accordion-content {
+        display: block;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        background: rgba(0, 122, 255, 0.08);
+        border: 1px solid rgba(0, 122, 255, 0.18);
+        color: #1d1d1f;
+        padding: 4px 8px;
+        border-radius: 8px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 12px;
       }
 
       .discrepancy-item {
-        background: white;
-        padding: 10px;
-        margin-bottom: 8px;
-        border-radius: 6px;
-        border-left: 3px solid #e74c3c;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        font-size: 0.9em;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 20px 24px;
+        margin-bottom: 16px;
+        border-radius: 16px;
+        border-left: 4px solid #ff3b30;
+        box-shadow: 0 4px 20px rgba(255, 59, 48, 0.1);
+        font-size: 0.95em;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+      }
+
+      .discrepancy-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(255, 59, 48, 0.15);
       }
 
       .discrepancy-item strong {
-        color: #e74c3c;
+        color: #ff3b30;
+        font-weight: 600;
+      }
+
+      /* Copy icon next to Unit ID */
+      .copy-btn {
+        margin-left: 8px;
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        background: rgba(0, 122, 255, 0.12);
+        color: #1d1d1f;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        line-height: 1;
+        transition: all 0.2s ease;
+      }
+
+      .copy-btn:hover {
+        background: rgba(0, 122, 255, 0.2);
+        transform: translateY(-1px);
+      }
+
+      .copy-btn.copied {
+        background: rgba(52, 199, 89, 0.2);
       }
 
       .download-btn {
         display: inline-block;
-        padding: 10px 20px;
-        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #34c759 0%, #30d158 100%);
         color: white;
         text-decoration: none;
-        border-radius: 6px;
+        border-radius: 12px;
         font-weight: 600;
-        margin-top: 10px;
+        margin-top: 16px;
         transition: all 0.3s ease;
-        font-size: 0.9em;
+        font-size: 0.95em;
+        letter-spacing: -0.1px;
+        box-shadow: 0 4px 15px rgba(52, 199, 89, 0.3);
       }
 
       .download-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(39, 174, 96, 0.3);
+        box-shadow: 0 8px 25px rgba(52, 199, 89, 0.4);
       }
 
       .export-section {
-        margin-top: 15px;
-        padding: 12px;
-        background-color: #f0f8ff;
-        border-radius: 8px;
-        border-left: 3px solid #2196f3;
+        margin-top: 32px;
+        padding: 24px;
+        background: rgba(0, 122, 255, 0.05);
+        border-radius: 20px;
+        border: 1px solid rgba(0, 122, 255, 0.1);
+        backdrop-filter: blur(10px);
       }
 
       .export-section h4 {
-        color: #1976d2;
-        margin-bottom: 10px;
-        font-size: 1em;
+        color: #1d1d1f;
+        margin-bottom: 20px;
+        font-size: 1.2em;
+        font-weight: 600;
+        letter-spacing: -0.2px;
       }
 
       .export-buttons {
         display: flex;
-        gap: 8px;
+        gap: 12px;
         flex-wrap: wrap;
       }
 
       .export-btn {
         display: inline-block;
-        padding: 8px 16px;
-        background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
         color: white;
         text-decoration: none;
-        border-radius: 5px;
+        border-radius: 12px;
         font-weight: 600;
         transition: all 0.3s ease;
-        font-size: 0.85em;
+        font-size: 0.9em;
         border: none;
         cursor: pointer;
+        letter-spacing: -0.1px;
+        box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
       }
 
       .export-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 122, 255, 0.4);
       }
 
       .export-btn.csv {
-        background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+        background: linear-gradient(135deg, #34c759 0%, #30d158 100%);
+        box-shadow: 0 4px 15px rgba(52, 199, 89, 0.3);
+      }
+
+      .export-btn.csv:hover {
+        box-shadow: 0 8px 25px rgba(52, 199, 89, 0.4);
       }
 
       .export-btn.excel {
-        background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+        background: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
       }
 
       .export-btn.json {
-        background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+        background: linear-gradient(135deg, #af52de 0%, #bf5af2 100%);
+        box-shadow: 0 4px 15px rgba(175, 82, 222, 0.3);
+      }
+
+      .export-btn.json:hover {
+        box-shadow: 0 8px 25px rgba(175, 82, 222, 0.4);
+      }
+
+      /* Sticky export toolbar in results panel */
+      .results-toolbar {
+        position: sticky;
+        top: 16px;
+        display: none;
+        width: 100%;
+        justify-content: flex-end;
+        gap: 12px;
+        z-index: 2;
+        margin-bottom: 12px;
       }
 
       .error {
-        background-color: #f8d7da;
-        color: #721c24;
-        padding: 12px;
-        border-radius: 6px;
-        margin-top: 10px;
-        border: 1px solid #f5c6cb;
-        font-size: 0.9em;
+        background: rgba(255, 59, 48, 0.1);
+        color: #ff3b30;
+        padding: 20px 24px;
+        border-radius: 16px;
+        margin-top: 16px;
+        border: 1px solid rgba(255, 59, 48, 0.2);
+        font-size: 0.95em;
+        backdrop-filter: blur(10px);
       }
 
       .success {
-        background-color: #d4edda;
-        color: #155724;
-        padding: 12px;
-        border-radius: 6px;
-        margin-top: 10px;
-        border: 1px solid #c3e6cb;
-        font-size: 0.9em;
+        background: rgba(52, 199, 89, 0.1);
+        color: #34c759;
+        padding: 20px 24px;
+        border-radius: 16px;
+        margin-top: 16px;
+        border: 1px solid rgba(52, 199, 89, 0.2);
+        font-size: 0.95em;
+        backdrop-filter: blur(10px);
+      }
+
+      .stats {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      .stat {
+        background: rgba(0, 122, 255, 0.06);
+        border: 1px solid rgba(0, 122, 255, 0.12);
+        color: #1d1d1f;
+        padding: 8px 12px;
+        border-radius: 12px;
+        font-weight: 600;
       }
 
       .instructions {
-        background-color: #e3f2fd;
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        border-left: 3px solid #2196f3;
+        background: rgba(0, 122, 255, 0.05);
+        padding: 20px 24px;
+        border-radius: 16px;
+        margin-bottom: 24px;
+        border: 1px solid rgba(0, 122, 255, 0.1);
         flex-shrink: 0;
+        backdrop-filter: blur(10px);
+      }
+
+      /* Tooltip styles for How it works */
+      .howitworks {
+        position: relative;
+        align-self: flex-start;
+        margin-bottom: 16px;
+      }
+
+      .tooltip-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        background: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
+        color: #fff;
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(0, 122, 255, 0.35);
+      }
+
+      .tooltip-content {
+        position: absolute;
+        top: 40px;
+        left: 0;
+        width: 280px;
+        max-width: calc(100vw - 60px);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 122, 255, 0.15);
+        border-radius: 16px;
+        padding: 16px 18px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(16px);
+        display: none;
+        z-index: 5;
+      }
+
+      .howitworks:hover .tooltip-content,
+      .howitworks.open .tooltip-content {
+        display: block;
       }
 
       .instructions h3 {
-        color: #1976d2;
-        margin-bottom: 8px;
-        font-size: 1em;
+        color: #1d1d1f;
+        margin-bottom: 16px;
+        font-size: 1.1em;
+        font-weight: 600;
+        letter-spacing: -0.2px;
       }
 
       .instructions ul {
-        margin-left: 15px;
+        margin-left: 0;
         margin-bottom: 0;
+        list-style: none;
       }
 
       .instructions li {
-        margin-bottom: 3px;
-        color: #2c3e50;
-        font-size: 0.85em;
+        margin-bottom: 8px;
+        color: #1d1d1f;
+        font-size: 0.9em;
+        position: relative;
+        padding-left: 20px;
+      }
+
+      .instructions li:before {
+        content: "•";
+        color: #007aff;
+        font-weight: bold;
+        position: absolute;
+        left: 0;
       }
 
       /* Responsive design for smaller screens */
+      @media (max-width: 768px) {
+        .container {
+          margin: 10px;
+          height: calc(100vh - 20px);
+        }
+
+        .main-content {
+          flex-direction: column;
+        }
+
+        .upload-panel {
+          width: 100%;
+          padding: 20px;
+        }
+
+        .upload-panel.compressed {
+          width: 100%;
+          padding: 20px;
+        }
+
+        .results-panel {
+          padding: 20px;
+        }
+
+        .results-panel.expanded {
+          padding: 20px;
+        }
+      }
+
       @media (max-height: 600px) {
         .header {
-          padding: 10px 20px;
+          padding: 16px 24px;
         }
         .header h1 {
-          font-size: 1.5em;
+          font-size: 1.8em;
         }
         .header p {
-          font-size: 0.8em;
+          font-size: 1em;
         }
-        .content {
-          padding: 15px;
+        .upload-panel {
+          padding: 20px;
+        }
+        .results-panel {
+          padding: 20px;
         }
         .instructions {
-          padding: 8px;
-          margin-bottom: 10px;
+          padding: 16px 20px;
+          margin-bottom: 16px;
         }
         .file-input-group {
-          padding: 10px;
-          margin-bottom: 10px;
+          padding: 16px;
+          margin-bottom: 16px;
         }
         .compare-btn {
-          padding: 10px;
-          margin-top: 8px;
+          padding: 12px 20px;
+          margin-top: 16px;
         }
       }
     </style>
@@ -338,41 +622,55 @@
         <p>Compare Modon and Sakneen Excel sheets for status discrepancies</p>
       </div>
 
-      <div class="content">
-        <div class="instructions">
-          <h3>How it works:</h3>
-          <ul>
-            <li>Upload Modon Excel (headers at row 3) and Sakneen Excel (headers at row 1)</li>
-            <li>Compare Unit Number (Modon) with UnitID (Sakneen)</li>
-            <li>Highlight units with EOI in Modon but "Available" in Sakneen</li>
-            <li>Download the highlighted Sakneen file</li>
-          </ul>
-        </div>
-
-        <form id="uploadForm" enctype="multipart/form-data">
-          <div class="upload-section">
-            <div class="file-input-group">
-              <label for="modon_file">Modon Excel File</label>
-              <input type="file" id="modon_file" name="modon_file" accept=".xlsx,.xls" required />
-              <div class="file-info">Columns: "Unit Number" and "EOI" (headers at row 3)</div>
-            </div>
-
-            <div class="file-input-group">
-              <label for="sakneen_file">Sakneen Excel File</label>
-              <input type="file" id="sakneen_file" name="sakneen_file" accept=".xlsx,.xls" required />
-              <div class="file-info">Columns: "UnitID" and "Status" (headers at row 1)</div>
+      <div class="main-content">
+        <div class="upload-panel" id="uploadPanel">
+          <div class="howitworks" id="howItWorks">
+            <button type="button" class="tooltip-button" aria-label="How it works" title="How it works">i</button>
+            <div class="tooltip-content" role="dialog" aria-modal="false">
+              <div class="instructions">
+                <h3>How it works</h3>
+                <ul>
+                  <li>Upload Modon Excel (headers at row 3) and Sakneen Excel (headers at row 1)</li>
+                  <li>Compare Unit Number (Modon) with UnitID (Sakneen)</li>
+                  <li>Highlight units with EOI in Modon but "Available" in Sakneen</li>
+                  <li>Download the highlighted Sakneen file</li>
+                </ul>
+              </div>
             </div>
           </div>
 
-          <button type="submit" class="compare-btn" id="compareBtn">Compare Files</button>
-        </form>
+          <form id="uploadForm" enctype="multipart/form-data">
+            <div class="upload-section">
+              <div class="file-input-group" id="modonGroup">
+                <label for="modon_file">Modon Excel File</label>
+                <input type="file" id="modon_file" name="modon_file" accept=".xlsx,.xls" required />
+                <div class="file-info">Columns: "Unit Number" and "EOI" (headers at row 3)</div>
+              </div>
 
-        <div class="loading" id="loading">
-          <div class="spinner"></div>
-          <p>Processing...</p>
+              <div class="file-input-group" id="sakneenGroup">
+                <label for="sakneen_file">Sakneen Excel File</label>
+                <input type="file" id="sakneen_file" name="sakneen_file" accept=".xlsx,.xls" required />
+                <div class="file-info">Columns: "UnitID" and "Status" (headers at row 1)</div>
+              </div>
+            </div>
+
+            <button type="submit" class="compare-btn" id="compareBtn">Compare Files</button>
+          </form>
+
+          <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+          </div>
         </div>
 
-        <div class="results" id="results"></div>
+        <div class="results-panel" id="resultsPanel">
+          <div class="results-toolbar" id="resultsToolbar">
+            <button class="export-btn csv" id="exportCsvBtn">CSV</button>
+            <button class="export-btn excel" id="exportExcelBtn">Excel</button>
+            <button class="export-btn json" id="exportJsonBtn">JSON</button>
+          </div>
+          <div class="results" id="results"></div>
+        </div>
       </div>
     </div>
 
@@ -429,7 +727,7 @@
           const modonMapping = {};
           for (let i = 3; i < modonData.length; i++) {
             const row = modonData[i];
-            if (row[modonUnitCol] && row[modonEoiCol] !== undefined) {
+            if (row[modonUnitCol]) {
               const unitNumber = row[modonUnitCol].toString().trim();
               const eoiValue = row[modonEoiCol];
               const hasEoi = eoiValue !== null && eoiValue !== undefined && eoiValue.toString().trim() !== "";
@@ -437,34 +735,79 @@
             }
           }
 
-          // Find discrepancies
+          // Counters, sets/lists, and discrepancies
           const discrepancies = [];
           const sakneenResult = [...sakneenData];
+          const sakneenUnitSet = new Set();
+          const sakneenAvailableAll = [];
+          const sakneenAvailableCommon = [];
+          const modonAvailableAll = [];
+          const modonAvailableCommon = [];
+
+          // Build Modon available list from mapping (EOI empty)
+          for (const [unitId, hasEoi] of Object.entries(modonMapping)) {
+            if (!hasEoi) modonAvailableAll.push(unitId);
+          }
 
           for (let i = 1; i < sakneenData.length; i++) {
             const row = sakneenData[i];
             if (row[sakneenUnitCol] && row[sakneenStatusCol]) {
               const unitId = row[sakneenUnitCol].toString().trim();
               const status = row[sakneenStatusCol].toString().trim();
+              sakneenUnitSet.add(unitId);
 
               if (modonMapping.hasOwnProperty(unitId)) {
                 const hasEoi = modonMapping[unitId];
-                if (hasEoi && status.toLowerCase() === "available") {
+                const isSakneenAvailable = status.toLowerCase() === "available";
+                if (isSakneenAvailable) {
+                  sakneenAvailableAll.push(unitId);
+                  sakneenAvailableCommon.push(unitId);
+                }
+
+                // Existing rule: Modon has EOI but Sakneen Available
+                if (hasEoi && isSakneenAvailable) {
                   discrepancies.push({
                     unit_id: unitId,
                     modon_status: "Not Available (has EOI)",
                     sakneen_status: status,
-                    issue: "Unit has EOI in Modon but shows as Available in Sakneen",
+                    issue: "EOI in Modon but Available in Sakneen",
                   });
+                  if (!sakneenResult[i]._highlight) sakneenResult[i]._highlight = true;
+                }
 
-                  // Mark row for highlighting
-                  if (!sakneenResult[i]._highlight) {
-                    sakneenResult[i]._highlight = true;
+                // New rule: Modon available (EOI empty) but Sakneen not Available
+                if (!hasEoi) {
+                  modonAvailableCommon.push(unitId);
+                  if (!isSakneenAvailable) {
+                    discrepancies.push({
+                      unit_id: unitId,
+                      modon_status: "Available (no EOI)",
+                      sakneen_status: status,
+                      issue: "Available in Modon but not Available in Sakneen",
+                    });
+                    if (!sakneenResult[i]._highlight) sakneenResult[i]._highlight = true;
                   }
                 }
               }
             }
           }
+
+          // Also include Sakneen Available units that are not present in Modon mapping in the All count
+          // (keep totals independent). We already added common ones above; add non-common here.
+          for (let i = 1; i < sakneenData.length; i++) {
+            const row = sakneenData[i];
+            if (row[sakneenUnitCol] && row[sakneenStatusCol]) {
+              const unitId = row[sakneenUnitCol].toString().trim();
+              const status = row[sakneenStatusCol].toString().trim();
+              if (!modonMapping.hasOwnProperty(unitId) && status.toLowerCase() === "available") {
+                sakneenAvailableAll.push(unitId);
+              }
+            }
+          }
+
+          // Compute availability differences (restricted to common units)
+          const commonAvailableInModonOnly = modonAvailableCommon.filter((u) => !sakneenAvailableCommon.includes(u));
+          const commonAvailableInSakneenOnly = sakneenAvailableCommon.filter((u) => !modonAvailableCommon.includes(u));
 
           return {
             success: true,
@@ -472,6 +815,12 @@
             total_discrepancies: discrepancies.length,
             sakneenResult: sakneenResult,
             sakneenHeaders: sakneenHeaders,
+            modonAvailableCount: modonAvailableAll.length,
+            sakneenAvailableCount: sakneenAvailableAll.length,
+            modonAvailableIds: modonAvailableAll,
+            sakneenAvailableIds: sakneenAvailableAll,
+            availableInModonOnly: commonAvailableInModonOnly,
+            availableInSakneenOnly: commonAvailableInSakneenOnly,
           };
         } catch (error) {
           return { error: error.message };
@@ -526,6 +875,50 @@
         XLSX.writeFile(wb, `sakneen_highlighted_${new Date().toISOString().slice(0, 19).replace(/[-:]/g, "").replace("T", "_")}.xlsx`);
       }
 
+      // Function to check if both files are uploaded and auto-submit
+      function checkAndAutoSubmit() {
+        const modonFile = document.getElementById("modon_file").files[0];
+        const sakneenFile = document.getElementById("sakneen_file").files[0];
+
+        if (modonFile && sakneenFile) {
+          // Auto-submit the form
+          document.getElementById("uploadForm").dispatchEvent(new Event("submit"));
+        }
+      }
+
+      // File input change handlers
+      document.getElementById("modon_file").addEventListener("change", function (e) {
+        if (e.target.files.length > 0) {
+          document.getElementById("modonGroup").classList.add("has-file");
+        } else {
+          document.getElementById("modonGroup").classList.remove("has-file");
+        }
+        // Check for auto-submit
+        checkAndAutoSubmit();
+      });
+
+      document.getElementById("sakneen_file").addEventListener("change", function (e) {
+        if (e.target.files.length > 0) {
+          document.getElementById("sakneenGroup").classList.add("has-file");
+        } else {
+          document.getElementById("sakneenGroup").classList.remove("has-file");
+        }
+        // Check for auto-submit
+        checkAndAutoSubmit();
+      });
+
+      // Toggle tooltip on click for accessibility and mobile
+      const howItWorks = document.getElementById("howItWorks");
+      const tooltipBtn = howItWorks.querySelector(".tooltip-button");
+      tooltipBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        howItWorks.classList.toggle("open");
+      });
+      // Close tooltip when clicking outside
+      document.addEventListener("click", function () {
+        howItWorks.classList.remove("open");
+      });
+
       // Form submission handler
       document.getElementById("uploadForm").addEventListener("submit", async function (e) {
         e.preventDefault();
@@ -538,10 +931,13 @@
           return;
         }
 
-        // Show loading
+        // Show loading and compress upload panel
         document.getElementById("loading").style.display = "block";
         document.getElementById("results").style.display = "none";
         document.getElementById("compareBtn").disabled = true;
+        document.getElementById("uploadPanel").classList.add("compressed");
+        document.getElementById("resultsPanel").classList.add("expanded");
+        document.getElementById("resultsToolbar").style.display = "none";
 
         try {
           // Read both files
@@ -550,7 +946,7 @@
           // Compare the files
           const result = compareExcelSheets(modonData, sakneenData);
 
-          // Hide loading
+          // Hide loading and show results
           document.getElementById("loading").style.display = "none";
           document.getElementById("compareBtn").disabled = false;
 
@@ -573,44 +969,106 @@
                         </div>
                     `;
 
+            // Stats summary
+            html += `
+              <div class="stats">
+                <div class="stat">Modon Available: <strong>${result.modonAvailableCount}</strong></div>
+                <div class="stat">Sakneen Available: <strong>${result.sakneenAvailableCount}</strong></div>
+              </div>
+            `;
+
+            // Availability breakdown accordions
+            html += `
+              <div class="accordion-section" id="modonAvailSection">
+                <button class="accordion-toggle" type="button">Modon Available IDs (${result.modonAvailableIds.length})<span>▾</span></button>
+                <div class="accordion-content">
+                  <div>${result.modonAvailableIds.map((id) => `<code>${id}</code>`).join(", ") || "None"}</div>
+                </div>
+              </div>
+              <div class="accordion-section" id="sakneenAvailSection">
+                <button class="accordion-toggle" type="button">Sakneen Available IDs (${result.sakneenAvailableIds.length})<span>▾</span></button>
+                <div class="accordion-content">
+                  <div>${result.sakneenAvailableIds.map((id) => `<code>${id}</code>`).join(", ") || "None"}</div>
+                </div>
+              </div>
+              <div class="accordion-section" id="modonOnlyAvailSection">
+                <button class="accordion-toggle" type="button">Available in Modon only (${result.availableInModonOnly.length})<span>▾</span></button>
+                <div class="accordion-content">
+                  <div>${result.availableInModonOnly.map((id) => `<code>${id}</code>`).join(", ") || "None"}</div>
+                </div>
+              </div>
+              <div class="accordion-section" id="sakneenOnlyAvailSection">
+                <button class="accordion-toggle" type="button">Available in Sakneen only (${result.availableInSakneenOnly.length})<span>▾</span></button>
+                <div class="accordion-content">
+                  <div>${result.availableInSakneenOnly.map((id) => `<code>${id}</code>`).join(", ") || "None"}</div>
+                </div>
+              </div>
+            `;
+
             if (result.discrepancies && result.discrepancies.length > 0) {
               html += "<h3>Discrepancies Found:</h3>";
               result.discrepancies.forEach((discrepancy) => {
                 html += `
                                 <div class="discrepancy-item">
-                                    <strong>Unit ${discrepancy.unit_id}:</strong> ${discrepancy.issue}
+                                    <strong>Unit ${discrepancy.unit_id}</strong>
+                                    <button class="copy-btn" data-unit="${discrepancy.unit_id}" title="Copy Unit ID">⧉</button>
+                                    : ${discrepancy.issue}
                                     <br>
                                     <small>Modon: ${discrepancy.modon_status} | Sakneen: ${discrepancy.sakneen_status}</small>
                                 </div>
                             `;
               });
-
-              // Add export section
-              html += `
-                            <div class="export-section">
-                                <h4>Export Options:</h4>
-                                <div class="export-buttons">
-                                    <button class="export-btn csv" onclick="exportToCSV(${JSON.stringify(result.discrepancies).replace(/"/g, "&quot;")})">CSV</button>
-                                    <button class="export-btn excel" onclick="exportToExcel(${JSON.stringify(result.sakneenResult).replace(/"/g, "&quot;")}, ${JSON.stringify(result.sakneenHeaders).replace(/"/g, "&quot;")}, ${JSON.stringify(result.discrepancies).replace(/"/g, "&quot;")})">Excel</button>
-                                    <button class="export-btn json" onclick="exportToJSON(${JSON.stringify(result.discrepancies).replace(/"/g, "&quot;")})">JSON</button>
-                                </div>
-                            </div>
-                        `;
             } else {
               html += "<p>No discrepancies found! All units have consistent status.</p>";
             }
 
             resultsDiv.innerHTML = html;
+
+            // Copy handlers for unit IDs
+            Array.from(document.querySelectorAll(".copy-btn")).forEach((btn) => {
+              btn.addEventListener("click", async function (ev) {
+                const unit = ev.currentTarget.getAttribute("data-unit");
+                try {
+                  await navigator.clipboard.writeText(unit);
+                  ev.currentTarget.classList.add("copied");
+                  setTimeout(() => ev.currentTarget.classList.remove("copied"), 1200);
+                } catch (_) {}
+              });
+            });
+
+            // Accordion toggles
+            Array.from(document.querySelectorAll(".accordion-section .accordion-toggle")).forEach((t) => {
+              t.addEventListener("click", function () {
+                const section = this.parentElement;
+                section.classList.toggle("open");
+              });
+            });
+
+            // Show and wire sticky export toolbar
+            const toolbar = document.getElementById("resultsToolbar");
+            toolbar.style.display = "flex";
+            document.getElementById("exportCsvBtn").onclick = function () {
+              exportToCSV(result.discrepancies);
+            };
+            document.getElementById("exportExcelBtn").onclick = function () {
+              exportToExcel(result.sakneenResult, result.sakneenHeaders, result.discrepancies);
+            };
+            document.getElementById("exportJsonBtn").onclick = function () {
+              exportToJSON(result.discrepancies);
+            };
           }
         } catch (error) {
           document.getElementById("loading").style.display = "none";
           document.getElementById("compareBtn").disabled = false;
+          document.getElementById("uploadPanel").classList.remove("compressed");
+          document.getElementById("resultsPanel").classList.remove("expanded");
+          document.getElementById("resultsToolbar").style.display = "none";
           document.getElementById("results").innerHTML = `
-                    <div class="error">
-                        <h3>Error</h3>
-                        <p>Failed to process files: ${error.message}</p>
-                    </div>
-                `;
+                     <div class="error">
+                         <h3>Error</h3>
+                         <p>Failed to process files: ${error.message}</p>
+                     </div>
+                 `;
           document.getElementById("results").style.display = "block";
         }
       });
