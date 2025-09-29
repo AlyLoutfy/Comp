@@ -86,14 +86,14 @@
 
       .results-panel {
         flex: 1;
-        padding: 32px;
+        padding: 24px;
         overflow-y: auto;
         background: rgba(255, 255, 255, 0.6);
         transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       .results-panel.expanded {
-        padding: 32px;
+        padding: 24px;
       }
 
       .upload-section {
@@ -292,7 +292,7 @@
         display: flex;
         gap: 8px;
         flex-wrap: wrap;
-        margin-top: 12px;
+        margin-top: 8px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.06);
         padding-bottom: 8px;
       }
@@ -314,7 +314,7 @@
 
       .tab-panel {
         display: none;
-        margin-top: 12px;
+        margin-top: 8px;
       }
 
       .tab-panel.active {
@@ -325,7 +325,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         gap: 8px;
-        max-height: 260px;
+        max-height: 420px;
         overflow: auto;
       }
 
@@ -487,13 +487,13 @@
       /* Sticky export toolbar in results panel */
       .results-toolbar {
         position: sticky;
-        top: 16px;
+        top: 8px;
         display: none;
         width: 100%;
         justify-content: flex-end;
         gap: 12px;
         z-index: 2;
-        margin-bottom: 12px;
+        margin-bottom: 4px;
       }
 
       .error {
@@ -853,16 +853,16 @@
           const discrepancies = [];
           const sakneenResult = [...sakneenData];
           const sakneenUnitSet = new Set();
-          const sakneenAvailableAll = [];
+          const sakneenAvailableSet = new Set();
           const sakneenAvailableCommon = [];
-          const modonAvailableAll = [];
+          const modonAvailableSet = new Set();
           const modonAvailableCommon = [];
 
           // Build Modon available list from mapping (EOI empty) AND EOI cell fill is white
           const whiteSet = new Set(modonWhiteEOIUnits || []);
           for (const [unitId, hasEoi] of Object.entries(modonMapping)) {
             if (!hasEoi && (whiteSet.size === 0 || whiteSet.has(unitId))) {
-              modonAvailableAll.push(unitId);
+              modonAvailableSet.add(unitId);
             }
           }
 
@@ -877,7 +877,7 @@
                 const hasEoi = modonMapping[unitId];
                 const isSakneenAvailable = status.toLowerCase() === "available";
                 if (isSakneenAvailable) {
-                  sakneenAvailableAll.push(unitId);
+                  sakneenAvailableSet.add(unitId);
                   sakneenAvailableCommon.push(unitId);
                 }
 
@@ -917,14 +917,21 @@
               const unitId = row[sakneenUnitCol].toString().trim();
               const status = row[sakneenStatusCol].toString().trim();
               if (!modonMapping.hasOwnProperty(unitId) && status.toLowerCase() === "available") {
-                sakneenAvailableAll.push(unitId);
+                sakneenAvailableSet.add(unitId);
               }
             }
           }
 
-          // Compute availability differences (restricted to common units)
-          const commonAvailableInModonOnly = modonAvailableCommon.filter((u) => !sakneenAvailableCommon.includes(u));
-          const commonAvailableInSakneenOnly = sakneenAvailableCommon.filter((u) => !modonAvailableCommon.includes(u));
+          // Convert sets to sorted arrays
+          const modonAvailableAll = Array.from(modonAvailableSet).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }));
+          const sakneenAvailableAll = Array.from(sakneenAvailableSet).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }));
+
+          // Compute availability differences across ALL units (not just common)
+          const availableInModonOnly = modonAvailableAll.filter((u) => !sakneenAvailableSet.has(u));
+          const availableInSakneenOnly = sakneenAvailableAll.filter((u) => !modonAvailableSet.has(u));
+
+          // Sort discrepancies by unit id to display alphabetically
+          discrepancies.sort((a, b) => String(a.unit_id).localeCompare(String(b.unit_id), undefined, { numeric: true, sensitivity: "base" }));
 
           return {
             success: true,
@@ -936,8 +943,8 @@
             sakneenAvailableCount: sakneenAvailableAll.length,
             modonAvailableIds: modonAvailableAll,
             sakneenAvailableIds: sakneenAvailableAll,
-            availableInModonOnly: commonAvailableInModonOnly,
-            availableInSakneenOnly: commonAvailableInSakneenOnly,
+            availableInModonOnly: availableInModonOnly,
+            availableInSakneenOnly: availableInSakneenOnly,
           };
         } catch (error) {
           return { error: error.message };
