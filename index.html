@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Excel Comparison Tool</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
     <style>
       * {
         margin: 0;
@@ -696,6 +697,57 @@
         });
       }
 
+      // Read Modon EOI cell background colors (white/no-fill considered white) using ExcelJS
+      function readModonEOIStyles(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = async function (e) {
+            try {
+              const buffer = e.target.result;
+              const wb = new ExcelJS.Workbook();
+              await wb.xlsx.load(buffer);
+              const ws = wb.worksheets[0];
+              const headerRow = ws.getRow(3);
+
+              // Find columns by header text
+              let unitColIdx = -1;
+              let eoiColIdx = -1;
+              headerRow.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+                const v = cell && cell.value ? String(cell.value).toLowerCase() : "";
+                if (v.includes("unit number") && unitColIdx === -1) unitColIdx = colNumber;
+                if (v.includes("eoi") && eoiColIdx === -1) eoiColIdx = colNumber;
+              });
+              if (unitColIdx === -1 || eoiColIdx === -1) return resolve([]);
+
+              const whiteUnits = [];
+              const lastRow = ws.actualRowCount || ws.rowCount;
+              for (let r = 4; r <= lastRow; r++) {
+                const unitCell = ws.getCell(r, unitColIdx);
+                const eoiCell = ws.getCell(r, eoiColIdx);
+                const unitValRaw = unitCell && unitCell.value;
+                if (unitValRaw === null || unitValRaw === undefined || unitValRaw === "") continue;
+                const unitId = typeof unitValRaw === "object" && unitValRaw.text ? unitValRaw.text : Array.isArray(unitValRaw?.richText) ? unitValRaw.richText.map((t) => t.text).join("") : String(unitValRaw);
+
+                let isWhite = true; // default to white if no explicit fill
+                const fill = eoiCell ? eoiCell.fill : null;
+                if (fill && fill.type === "pattern" && fill.pattern === "solid" && fill.fgColor && fill.fgColor.argb) {
+                  const argb = String(fill.fgColor.argb).toUpperCase();
+                  // Treat as white only when ARGB ends with FFFFFF
+                  isWhite = argb.endsWith("FFFFFF");
+                }
+                if (isWhite) whiteUnits.push(String(unitId).trim());
+              }
+              resolve(whiteUnits);
+            } catch (err) {
+              // If style parse fails, resolve empty array to avoid blocking
+              resolve([]);
+            }
+          };
+          reader.onerror = () => resolve([]);
+          reader.readAsArrayBuffer(file);
+        });
+      }
+
       function findColumnIndex(headers, searchTerms) {
         for (let term of searchTerms) {
           for (let i = 0; i < headers.length; i++) {
@@ -707,7 +759,7 @@
         return -1;
       }
 
-      function compareExcelSheets(modonData, sakneenData) {
+      function compareExcelSheets(modonData, sakneenData, modonWhiteEOIUnits) {
         try {
           // Read Modon sheet (headers at row 3, index 2)
           const modonHeaders = modonData[2];
@@ -744,9 +796,12 @@
           const modonAvailableAll = [];
           const modonAvailableCommon = [];
 
-          // Build Modon available list from mapping (EOI empty)
+          // Build Modon available list from mapping (EOI empty) AND EOI cell fill is white
+          const whiteSet = new Set(modonWhiteEOIUnits || []);
           for (const [unitId, hasEoi] of Object.entries(modonMapping)) {
-            if (!hasEoi) modonAvailableAll.push(unitId);
+            if (!hasEoi && (whiteSet.size === 0 || whiteSet.has(unitId))) {
+              modonAvailableAll.push(unitId);
+            }
           }
 
           for (let i = 1; i < sakneenData.length; i++) {
@@ -776,7 +831,7 @@
                 }
 
                 // New rule: Modon available (EOI empty) but Sakneen not Available
-                if (!hasEoi) {
+                if (!hasEoi && (whiteSet.size === 0 || whiteSet.has(unitId))) {
                   modonAvailableCommon.push(unitId);
                   if (!isSakneenAvailable) {
                     discrepancies.push({
@@ -940,11 +995,11 @@
         document.getElementById("resultsToolbar").style.display = "none";
 
         try {
-          // Read both files
-          const [modonData, sakneenData] = await Promise.all([readExcelFile(modonFile), readExcelFile(sakneenFile)]);
+          // Read both files and Modon EOI cell background styles
+          const [modonData, sakneenData, modonWhiteEOIUnits] = await Promise.all([readExcelFile(modonFile), readExcelFile(sakneenFile), readModonEOIStyles(modonFile)]);
 
           // Compare the files
-          const result = compareExcelSheets(modonData, sakneenData);
+          const result = compareExcelSheets(modonData, sakneenData, modonWhiteEOIUnits);
 
           // Hide loading and show results
           document.getElementById("loading").style.display = "none";
