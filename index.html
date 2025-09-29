@@ -484,18 +484,6 @@
         box-shadow: 0 8px 25px rgba(175, 82, 222, 0.4);
       }
 
-      /* Sticky export toolbar in results panel */
-      .results-toolbar {
-        position: sticky;
-        top: 8px;
-        display: none;
-        width: 100%;
-        justify-content: flex-end;
-        gap: 12px;
-        z-index: 2;
-        margin-bottom: 4px;
-      }
-
       .error {
         background: rgba(255, 59, 48, 0.1);
         color: #ff3b30;
@@ -532,6 +520,66 @@
         padding: 8px 12px;
         border-radius: 12px;
         font-weight: 600;
+      }
+
+      /* Beautiful unified summary card */
+      .summary-card {
+        position: sticky;
+        top: 8px;
+        background: linear-gradient(135deg, rgba(52, 199, 89, 0.12) 0%, rgba(0, 122, 255, 0.08) 100%);
+        border: 1px solid rgba(52, 199, 89, 0.2);
+        border-radius: 20px;
+        padding: 20px 24px;
+        margin-bottom: 16px;
+        box-shadow: 0 8px 32px rgba(52, 199, 89, 0.15);
+        backdrop-filter: blur(20px);
+        z-index: 10;
+      }
+
+      .summary-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+
+      .summary-title {
+        font-size: 1.4em;
+        font-weight: 700;
+        color: #1d1d1f;
+        margin: 0;
+      }
+
+      .summary-subtitle {
+        color: #34c759;
+        font-weight: 600;
+        font-size: 1em;
+        margin: 4px 0 0 0;
+      }
+
+      .summary-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .summary-stats {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      .summary-stat {
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(0, 122, 255, 0.15);
+        color: #1d1d1f;
+        padding: 10px 14px;
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 0.95em;
+        box-shadow: 0 2px 8px rgba(0, 122, 255, 0.1);
+        backdrop-filter: blur(10px);
       }
 
       .instructions {
@@ -727,11 +775,6 @@
         </div>
 
         <div class="results-panel" id="resultsPanel">
-          <div class="results-toolbar" id="resultsToolbar">
-            <button class="export-btn csv" id="exportCsvBtn">CSV</button>
-            <button class="export-btn excel" id="exportExcelBtn">Excel</button>
-            <button class="export-btn json" id="exportJsonBtn">JSON</button>
-          </div>
           <div class="results" id="results"></div>
         </div>
       </div>
@@ -1061,7 +1104,6 @@
         document.getElementById("compareBtn").disabled = true;
         document.getElementById("uploadPanel").classList.add("compressed");
         document.getElementById("resultsPanel").classList.add("expanded");
-        document.getElementById("resultsToolbar").style.display = "none";
 
         try {
           // Read both files and Modon EOI cell background styles
@@ -1087,17 +1129,22 @@
                     `;
           } else if (result.success) {
             let html = `
-                        <div class="success">
-                            <h3>Comparison Complete!</h3>
-                            <p>Found <strong>${result.total_discrepancies}</strong> discrepancies</p>
-                        </div>
-                    `;
-
-            // Stats summary
-            html += `
-              <div class="stats">
-                <div class="stat">Modon Available: <strong>${result.modonAvailableCount}</strong></div>
-                <div class="stat">Sakneen Available: <strong>${result.sakneenAvailableCount}</strong></div>
+              <div class="summary-card">
+                <div class="summary-header">
+                  <div>
+                    <div class="summary-title">Comparison Complete!</div>
+                    <div class="summary-subtitle">Found ${result.total_discrepancies} discrepancies</div>
+                  </div>
+                  <div class="summary-actions">
+                    <button class="export-btn csv" id="exportCsvBtn">CSV</button>
+                    <button class="export-btn excel" id="exportExcelBtn">Excel</button>
+                    <button class="export-btn json" id="exportJsonBtn">JSON</button>
+                  </div>
+                </div>
+                <div class="summary-stats">
+                  <div class="summary-stat">Modon Available: <strong>${result.modonAvailableCount}</strong></div>
+                  <div class="summary-stat">Sakneen Available: <strong>${result.sakneenAvailableCount}</strong></div>
+                </div>
               </div>
             `;
 
@@ -1224,9 +1271,7 @@
               });
             });
 
-            // Show and wire sticky export toolbar
-            const toolbar = document.getElementById("resultsToolbar");
-            toolbar.style.display = "flex";
+            // Wire export buttons
             document.getElementById("exportCsvBtn").onclick = function () {
               exportToCSV(result.discrepancies);
             };
@@ -1242,7 +1287,6 @@
           document.getElementById("compareBtn").disabled = false;
           document.getElementById("uploadPanel").classList.remove("compressed");
           document.getElementById("resultsPanel").classList.remove("expanded");
-          document.getElementById("resultsToolbar").style.display = "none";
           document.getElementById("results").innerHTML = `
                      <div class="error">
                          <h3>Error</h3>
