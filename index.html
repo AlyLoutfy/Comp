@@ -287,14 +287,69 @@
         font-size: 12px;
       }
 
+      /* Tabs UI for results */
+      .tabs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        padding-bottom: 8px;
+      }
+
+      .tab-btn {
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        background: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        font-weight: 600;
+        color: #1d1d1f;
+      }
+
+      .tab-btn.active {
+        background: rgba(0, 122, 255, 0.12);
+        border-color: rgba(0, 122, 255, 0.25);
+      }
+
+      .tab-panel {
+        display: none;
+        margin-top: 12px;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      .id-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 8px;
+        max-height: 260px;
+        overflow: auto;
+      }
+
+      .id-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: 10px;
+        padding: 6px 8px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 12px;
+      }
+
       .discrepancy-item {
         background: rgba(255, 255, 255, 0.8);
-        padding: 20px 24px;
-        margin-bottom: 16px;
+        padding: 12px 16px;
+        margin-bottom: 10px;
         border-radius: 16px;
         border-left: 4px solid #ff3b30;
         box-shadow: 0 4px 20px rgba(255, 59, 48, 0.1);
-        font-size: 0.95em;
+        font-size: 0.9em;
+        line-height: 1.25;
         backdrop-filter: blur(10px);
         transition: all 0.3s ease;
       }
@@ -307,6 +362,13 @@
       .discrepancy-item strong {
         color: #ff3b30;
         font-weight: 600;
+      }
+
+      .discrepancy-item small {
+        display: block;
+        margin-top: 4px;
+        font-size: 0.82em;
+        opacity: 0.9;
       }
 
       /* Copy icon next to Unit ID */
@@ -1032,52 +1094,105 @@
               </div>
             `;
 
-            // Availability breakdown accordions
+            // Tabs for discrepancies and availability lists
             html += `
-              <div class="accordion-section" id="modonAvailSection">
-                <button class="accordion-toggle" type="button">Modon Available IDs (${result.modonAvailableIds.length})<span>▾</span></button>
-                <div class="accordion-content">
-                  <div>${result.modonAvailableIds.map((id) => `<code>${id}</code>`).join(", ") || "None"}</div>
+              <div class="tabs" id="resultsTabs">
+                <button class="tab-btn active" data-target="#tab-discrepancies">Discrepancies (${result.total_discrepancies})</button>
+                <button class="tab-btn" data-target="#tab-modon-available">Modon Available (${result.modonAvailableIds.length})</button>
+                <button class="tab-btn" data-target="#tab-sakneen-available">Sakneen Available (${result.sakneenAvailableIds.length})</button>
+                <button class="tab-btn" data-target="#tab-modon-only">Available in Modon only (${result.availableInModonOnly.length})</button>
+                <button class="tab-btn" data-target="#tab-sakneen-only">Available in Sakneen only (${result.availableInSakneenOnly.length})</button>
+              </div>
+
+              <div class="tab-panel active" id="tab-discrepancies"></div>
+              <div class="tab-panel" id="tab-modon-available">
+                <div class="id-grid">
+                  ${
+                    result.modonAvailableIds
+                      .map(
+                        (id) => `
+                    <div class="id-item">
+                      <span>${id}</span>
+                      <button class="copy-btn" data-unit="${id}" title="Copy">⧉</button>
+                    </div>
+                  `
+                      )
+                      .join("") || "None"
+                  }
                 </div>
               </div>
-              <div class="accordion-section" id="sakneenAvailSection">
-                <button class="accordion-toggle" type="button">Sakneen Available IDs (${result.sakneenAvailableIds.length})<span>▾</span></button>
-                <div class="accordion-content">
-                  <div>${result.sakneenAvailableIds.map((id) => `<code>${id}</code>`).join(", ") || "None"}</div>
+              <div class="tab-panel" id="tab-sakneen-available">
+                <div class="id-grid">
+                  ${
+                    result.sakneenAvailableIds
+                      .map(
+                        (id) => `
+                    <div class="id-item">
+                      <span>${id}</span>
+                      <button class="copy-btn" data-unit="${id}" title="Copy">⧉</button>
+                    </div>
+                  `
+                      )
+                      .join("") || "None"
+                  }
                 </div>
               </div>
-              <div class="accordion-section" id="modonOnlyAvailSection">
-                <button class="accordion-toggle" type="button">Available in Modon only (${result.availableInModonOnly.length})<span>▾</span></button>
-                <div class="accordion-content">
-                  <div>${result.availableInModonOnly.map((id) => `<code>${id}</code>`).join(", ") || "None"}</div>
+              <div class="tab-panel" id="tab-modon-only">
+                <div class="id-grid">
+                  ${
+                    result.availableInModonOnly
+                      .map(
+                        (id) => `
+                    <div class="id-item">
+                      <span>${id}</span>
+                      <button class="copy-btn" data-unit="${id}" title="Copy">⧉</button>
+                    </div>
+                  `
+                      )
+                      .join("") || "None"
+                  }
                 </div>
               </div>
-              <div class="accordion-section" id="sakneenOnlyAvailSection">
-                <button class="accordion-toggle" type="button">Available in Sakneen only (${result.availableInSakneenOnly.length})<span>▾</span></button>
-                <div class="accordion-content">
-                  <div>${result.availableInSakneenOnly.map((id) => `<code>${id}</code>`).join(", ") || "None"}</div>
+              <div class="tab-panel" id="tab-sakneen-only">
+                <div class="id-grid">
+                  ${
+                    result.availableInSakneenOnly
+                      .map(
+                        (id) => `
+                    <div class="id-item">
+                      <span>${id}</span>
+                      <button class="copy-btn" data-unit="${id}" title="Copy">⧉</button>
+                    </div>
+                  `
+                      )
+                      .join("") || "None"
+                  }
                 </div>
               </div>
             `;
 
-            if (result.discrepancies && result.discrepancies.length > 0) {
-              html += "<h3>Discrepancies Found:</h3>";
+            // Fill discrepancies tab content
+            const buildDiscrepanciesHTML = () => {
+              if (!result.discrepancies || result.discrepancies.length === 0) {
+                return "<p>No discrepancies found! All units have consistent status.</p>";
+              }
+              let chunk = "<h3>Discrepancies Found:</h3>";
               result.discrepancies.forEach((discrepancy) => {
-                html += `
-                                <div class="discrepancy-item">
-                                    <strong>Unit ${discrepancy.unit_id}</strong>
-                                    <button class="copy-btn" data-unit="${discrepancy.unit_id}" title="Copy Unit ID">⧉</button>
-                                    : ${discrepancy.issue}
-                                    <br>
-                                    <small>Modon: ${discrepancy.modon_status} | Sakneen: ${discrepancy.sakneen_status}</small>
-                                </div>
-                            `;
+                chunk += `
+                  <div class="discrepancy-item">
+                    <strong>Unit ${discrepancy.unit_id}</strong>
+                    <button class="copy-btn" data-unit="${discrepancy.unit_id}" title="Copy Unit ID">⧉</button>
+                    : ${discrepancy.issue}
+                    <br>
+                    <small>Modon: ${discrepancy.modon_status} | Sakneen: ${discrepancy.sakneen_status}</small>
+                  </div>
+                `;
               });
-            } else {
-              html += "<p>No discrepancies found! All units have consistent status.</p>";
-            }
+              return chunk;
+            };
 
             resultsDiv.innerHTML = html;
+            document.getElementById("tab-discrepancies").innerHTML = buildDiscrepanciesHTML();
 
             // Copy handlers for unit IDs
             Array.from(document.querySelectorAll(".copy-btn")).forEach((btn) => {
@@ -1091,11 +1206,14 @@
               });
             });
 
-            // Accordion toggles
-            Array.from(document.querySelectorAll(".accordion-section .accordion-toggle")).forEach((t) => {
-              t.addEventListener("click", function () {
-                const section = this.parentElement;
-                section.classList.toggle("open");
+            // Tabs behavior
+            Array.from(document.querySelectorAll(".tabs .tab-btn")).forEach((btn) => {
+              btn.addEventListener("click", function () {
+                document.querySelectorAll(".tabs .tab-btn").forEach((b) => b.classList.remove("active"));
+                document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
+                this.classList.add("active");
+                const target = document.querySelector(this.getAttribute("data-target"));
+                if (target) target.classList.add("active");
               });
             });
 
