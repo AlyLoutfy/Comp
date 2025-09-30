@@ -489,6 +489,12 @@
         border: 1px solid rgba(142, 142, 147, 0.3);
       }
 
+      .status-price {
+        background: rgba(255, 193, 7, 0.15);
+        color: #ff9800;
+        border: 1px solid rgba(255, 193, 7, 0.3);
+      }
+
       .discrepancy-item {
         display: flex;
         align-items: center;
@@ -1147,13 +1153,13 @@
               <div class="file-input-group" id="modonGroup">
                 <label for="modon_file">Modon Excel File</label>
                 <input type="file" id="modon_file" name="modon_file" accept=".xlsx,.xls" required />
-                <div class="file-info">Columns: "Unit Number" and "EOI" (headers at row 3)</div>
+                <div class="file-info">Columns: "Unit Number", "EOI", and "8 Yrs EGP Price" (headers at row 3)</div>
               </div>
 
               <div class="file-input-group" id="sakneenGroup">
                 <label for="sakneen_file">Sakneen Excel File</label>
                 <input type="file" id="sakneen_file" name="sakneen_file" accept=".xlsx,.xls" required />
-                <div class="file-info">Columns: "UnitID" and "Status" (headers at row 1)</div>
+                <div class="file-info">Columns: "UnitID", "Status", and "Price" (headers at row 1)</div>
               </div>
             </div>
 
@@ -1181,7 +1187,7 @@
     </div>
 
     <!-- Version indicator -->
-    <div style="position: fixed; bottom: 8px; right: 8px; font-size: 10px; color: #666; background: rgba(255, 255, 255, 0.8); padding: 2px 6px; border-radius: 4px; z-index: 1000">v1.0.12</div>
+    <div style="position: fixed; bottom: 8px; right: 8px; font-size: 10px; color: #666; background: rgba(255, 255, 255, 0.8); padding: 2px 6px; border-radius: 4px; z-index: 1000">v1.1.1</div>
 
     <!-- Help Modal -->
     <div class="modal-overlay" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
@@ -1310,15 +1316,20 @@
           const modonUnitCol = findColumnIndex(modonHeaders, ["unit number"]);
           const modonEoiCol = findColumnIndex(modonHeaders, ["eoi"]);
           const modonSalesAgentCol = findColumnIndex(modonHeaders, ["sales agent", "sales_agent"]);
+          const modonPriceCol = findColumnIndex(modonHeaders, ["8 yrs egp price"]);
 
           // Read Sakneen sheet (headers at row 1, index 0)
           const sakneenHeaders = sakneenData[0];
           const sakneenUnitCol = findColumnIndex(sakneenHeaders, ["unitid", "unit id"]);
           const sakneenStatusCol = findColumnIndex(sakneenHeaders, ["status"]);
+          const sakneenPriceCol = findColumnIndex(sakneenHeaders, ["price"]);
 
           if (modonUnitCol === -1 || modonEoiCol === -1 || modonSalesAgentCol === -1 || sakneenUnitCol === -1 || sakneenStatusCol === -1) {
             throw new Error("Required columns not found. Please check your Excel files.");
           }
+
+          // Check if price columns exist (optional)
+          const hasPriceComparison = modonPriceCol !== -1 && sakneenPriceCol !== -1;
 
           // Create mapping from Modon data
           const modonMapping = {};
@@ -1328,10 +1339,14 @@
               const unitNumber = row[modonUnitCol].toString().trim();
               const eoiValue = row[modonEoiCol];
               const salesAgentValue = row[modonSalesAgentCol];
+              const priceValue = hasPriceComparison ? row[modonPriceCol] : null;
               const hasEoi = eoiValue !== null && eoiValue !== undefined && eoiValue.toString().trim() !== "";
               const hasSalesAgent = salesAgentValue !== null && salesAgentValue !== undefined && salesAgentValue.toString().trim() !== "";
               const isAvailable = !hasEoi && !hasSalesAgent;
-              modonMapping[unitNumber] = isAvailable;
+              modonMapping[unitNumber] = {
+                isAvailable: isAvailable,
+                price: priceValue,
+              };
             }
           }
 
@@ -1346,8 +1361,8 @@
 
           // Build Modon available list from mapping (EOI empty AND Sales Agent empty) AND EOI cell fill is white
           const whiteSet = new Set(modonWhiteEOIUnits || []);
-          for (const [unitId, isAvailable] of Object.entries(modonMapping)) {
-            if (isAvailable && (whiteSet.size === 0 || whiteSet.has(unitId))) {
+          for (const [unitId, unitData] of Object.entries(modonMapping)) {
+            if (unitData.isAvailable && (whiteSet.size === 0 || whiteSet.has(unitId))) {
               modonAvailableSet.add(unitId);
             }
           }
@@ -1357,10 +1372,12 @@
             if (row[sakneenUnitCol] && row[sakneenStatusCol]) {
               const unitId = row[sakneenUnitCol].toString().trim();
               const status = row[sakneenStatusCol].toString().trim();
+              const sakneenPrice = hasPriceComparison ? row[sakneenPriceCol] : null;
               sakneenUnitSet.add(unitId);
 
               if (modonMapping.hasOwnProperty(unitId)) {
-                const isModonAvailable = modonMapping[unitId];
+                const modonData = modonMapping[unitId];
+                const isModonAvailable = modonData.isAvailable;
                 const isSakneenAvailable = status.toLowerCase() === "available";
                 if (isSakneenAvailable) {
                   sakneenAvailableSet.add(unitId);
@@ -1374,6 +1391,7 @@
                     modon_status: "Not Available (has EOI or Sales Agent)",
                     sakneen_status: status,
                     issue: "EOI or Sales Agent in Modon but Available in Sakneen",
+                    type: "status",
                   });
                   if (!sakneenResult[i]._highlight) sakneenResult[i]._highlight = true;
                 }
@@ -1387,6 +1405,24 @@
                       modon_status: "Available (no EOI or Sales Agent)",
                       sakneen_status: status,
                       issue: "Available in Modon but not Available in Sakneen",
+                      type: "status",
+                    });
+                    if (!sakneenResult[i]._highlight) sakneenResult[i]._highlight = true;
+                  }
+                }
+
+                // Price comparison (if both price columns exist)
+                if (hasPriceComparison && modonData.price !== null && modonData.price !== undefined && sakneenPrice !== null && sakneenPrice !== undefined) {
+                  const modonPrice = parseFloat(modonData.price.toString().replace(/[^\d.-]/g, ""));
+                  const sakneenPriceNum = parseFloat(sakneenPrice.toString().replace(/[^\d.-]/g, ""));
+
+                  if (!isNaN(modonPrice) && !isNaN(sakneenPriceNum) && modonPrice !== sakneenPriceNum) {
+                    discrepancies.push({
+                      unit_id: unitId,
+                      modon_price: modonData.price,
+                      sakneen_price: sakneenPrice,
+                      issue: `Price mismatch: Modon (${modonData.price}) vs Sakneen (${sakneenPrice})`,
+                      type: "price",
                     });
                     if (!sakneenResult[i]._highlight) sakneenResult[i]._highlight = true;
                   }
@@ -1431,6 +1467,7 @@
             sakneenAvailableIds: sakneenAvailableAll,
             availableInModonOnly: availableInModonOnly,
             availableInSakneenOnly: availableInSakneenOnly,
+            hasPriceComparison: hasPriceComparison,
           };
         } catch (error) {
           return { error: error.message };
@@ -1452,8 +1489,15 @@
       function exportToCSV(discrepancies) {
         if (discrepancies.length === 0) return;
 
-        const headers = ["Unit ID", "Modon Status", "Sakneen Status", "Issue"];
-        const csvContent = [headers.join(","), ...discrepancies.map((d) => [`"${d.unit_id}"`, `"${d.modon_status}"`, `"${d.sakneen_status}"`, `"${d.issue}"`].join(","))].join("\n");
+        const headers = ["Unit ID", "Type", "Modon Value", "Sakneen Value", "Issue"];
+        const csvContent = [
+          headers.join(","),
+          ...discrepancies.map((d) => {
+            const modonValue = d.type === "price" ? d.modon_price : d.modon_status;
+            const sakneenValue = d.type === "price" ? d.sakneen_price : d.sakneen_status;
+            return [`"${d.unit_id}"`, `"${d.type}"`, `"${modonValue}"`, `"${sakneenValue}"`, `"${d.issue}"`].join(",");
+          }),
+        ].join("\n");
 
         downloadFile(csvContent, `discrepancies_${new Date().toISOString().slice(0, 19).replace(/[-:]/g, "").replace("T", "_")}.csv`, "text/csv");
       }
@@ -1477,7 +1521,14 @@
         XLSX.utils.book_append_sheet(wb, sakneenWS, "Sakneen_With_Highlights");
 
         // Add discrepancies sheet
-        const discrepanciesData = [["Unit ID", "Modon Status", "Sakneen Status", "Issue"], ...discrepancies.map((d) => [d.unit_id, d.modon_status, d.sakneen_status, d.issue])];
+        const discrepanciesData = [
+          ["Unit ID", "Type", "Modon Value", "Sakneen Value", "Issue"],
+          ...discrepancies.map((d) => {
+            const modonValue = d.type === "price" ? d.modon_price : d.modon_status;
+            const sakneenValue = d.type === "price" ? d.sakneen_price : d.sakneen_status;
+            return [d.unit_id, d.type, modonValue, sakneenValue, d.issue];
+          }),
+        ];
         const discrepanciesWS = XLSX.utils.aoa_to_sheet(discrepanciesData);
         XLSX.utils.book_append_sheet(wb, discrepanciesWS, "Discrepancies");
 
@@ -1623,9 +1674,14 @@
             `;
 
             // Tabs for discrepancies and availability lists
+            const statusDiscrepancies = result.discrepancies.filter((d) => d.type === "status").length;
+            const priceDiscrepancies = result.discrepancies.filter((d) => d.type === "price").length;
+
             html += `
               <div class="tabs" id="resultsTabs">
-                <button class="tab-btn active" data-target="#tab-discrepancies">Discrepancies (${result.total_discrepancies})</button>
+                <button class="tab-btn active" data-target="#tab-discrepancies">All Discrepancies (${result.total_discrepancies})</button>
+                <button class="tab-btn" data-target="#tab-status-discrepancies">Status Issues (${statusDiscrepancies})</button>
+                <button class="tab-btn" data-target="#tab-price-discrepancies">Price Issues (${priceDiscrepancies})</button>
                 <button class="tab-btn" data-target="#tab-modon-available">Modon Available (${result.modonAvailableIds.length})</button>
                 <button class="tab-btn" data-target="#tab-sakneen-available">Sakneen Available (${result.sakneenAvailableIds.length})</button>
                 <button class="tab-btn" data-target="#tab-modon-only">Available in Modon only (${result.availableInModonOnly.length})</button>
@@ -1633,6 +1689,8 @@
               </div>
 
               <div class="tab-panel active" id="tab-discrepancies"></div>
+              <div class="tab-panel" id="tab-status-discrepancies"></div>
+              <div class="tab-panel" id="tab-price-discrepancies"></div>
               <div class="tab-panel" id="tab-modon-available">
                 <div class="id-grid">
                   ${
@@ -1700,20 +1758,20 @@
             `;
 
             // Fill discrepancies tab content
-            const buildDiscrepanciesHTML = () => {
-              if (!result.discrepancies || result.discrepancies.length === 0) {
-                return "<p>No discrepancies found! All units have consistent status.</p>";
+            const buildDiscrepanciesHTML = (discrepancies, title, buttonId) => {
+              if (!discrepancies || discrepancies.length === 0) {
+                return "<p>No discrepancies found! All units have consistent data.</p>";
               }
               let chunk = `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                  <h3 style="margin: 0;">Discrepancies Found:</h3>
-                  <button class="copy-all-btn" id="copyAllUnitIdsBtn">
+                  <h3 style="margin: 0;">${title}:</h3>
+                  <button class="copy-all-btn" id="${buttonId}">
                     <span>📋</span>
                     <span>Copy All Unit IDs</span>
                   </button>
                 </div>
               `;
-              result.discrepancies.forEach((discrepancy) => {
+              discrepancies.forEach((discrepancy) => {
                 // Helper function to get status class
                 const getStatusClass = (status) => {
                   const s = (status || "").toString().toLowerCase();
@@ -1733,25 +1791,51 @@
                   return "Unavailable";
                 };
 
-                chunk += `
-                  <div class="discrepancy-item">
-                    <div>
-                      <strong>Unit ${discrepancy.unit_id}</strong>
-                      <button class="copy-btn" data-unit="${discrepancy.unit_id}" title="Copy Unit ID">⧉</button>
-                      : ${discrepancy.issue}
+                if (discrepancy.type === "price") {
+                  chunk += `
+                    <div class="discrepancy-item">
+                      <div>
+                        <strong>Unit ${discrepancy.unit_id}</strong>
+                        <button class="copy-btn" data-unit="${discrepancy.unit_id}" title="Copy Unit ID">⧉</button>
+                        : ${discrepancy.issue}
+                      </div>
+                      <div class="status-labels">
+                        <span class="status-label status-price">Modon: ${discrepancy.modon_price}</span>
+                        <span class="status-label status-price">Sakneen: ${discrepancy.sakneen_price}</span>
+                      </div>
                     </div>
-                    <div class="status-labels">
-                      <span class="status-label ${getStatusClass(discrepancy.sakneen_status)}">Sakneen: ${getStatusText(discrepancy.sakneen_status)}</span>
-                      <span class="status-label ${getStatusClass(discrepancy.modon_status)}">Modon: ${getStatusText(discrepancy.modon_status)}</span>
+                  `;
+                } else {
+                  chunk += `
+                    <div class="discrepancy-item">
+                      <div>
+                        <strong>Unit ${discrepancy.unit_id}</strong>
+                        <button class="copy-btn" data-unit="${discrepancy.unit_id}" title="Copy Unit ID">⧉</button>
+                        : ${discrepancy.issue}
+                      </div>
+                      <div class="status-labels">
+                        <span class="status-label ${getStatusClass(discrepancy.sakneen_status)}">Sakneen: ${getStatusText(discrepancy.sakneen_status)}</span>
+                        <span class="status-label ${getStatusClass(discrepancy.modon_status)}">Modon: ${getStatusText(discrepancy.modon_status)}</span>
+                      </div>
                     </div>
-                  </div>
-                `;
+                  `;
+                }
               });
               return chunk;
             };
 
             resultsDiv.innerHTML = html;
-            document.getElementById("tab-discrepancies").innerHTML = buildDiscrepanciesHTML();
+            document.getElementById("tab-discrepancies").innerHTML = buildDiscrepanciesHTML(result.discrepancies, "All Discrepancies", "copyAllBtn");
+            document.getElementById("tab-status-discrepancies").innerHTML = buildDiscrepanciesHTML(
+              result.discrepancies.filter((d) => d.type === "status"),
+              "Status Discrepancies",
+              "copyStatusBtn"
+            );
+            document.getElementById("tab-price-discrepancies").innerHTML = buildDiscrepanciesHTML(
+              result.discrepancies.filter((d) => d.type === "price"),
+              "Price Discrepancies",
+              "copyPriceBtn"
+            );
 
             // Reveal results toolbar
             const toolbar = document.getElementById("resultsToolbar");
@@ -1813,37 +1897,50 @@
               });
             });
 
-            // Copy all unit IDs button handler
-            const copyAllBtn = document.getElementById("copyAllUnitIdsBtn");
-            if (copyAllBtn) {
-              copyAllBtn.addEventListener("click", async function () {
-                // Extract all unit IDs from discrepancies
-                const unitIds = result.discrepancies.map((d) => d.unit_id);
-                // Join with newlines to mimic Excel column copy
-                const textToCopy = unitIds.join("\n");
+            // Copy all unit IDs button handlers for all tabs
+            const setupCopyAllButton = (buttonId, discrepancies) => {
+              const copyAllBtn = document.getElementById(buttonId);
+              if (copyAllBtn) {
+                copyAllBtn.addEventListener("click", async function () {
+                  // Extract all unit IDs from discrepancies
+                  const unitIds = discrepancies.map((d) => d.unit_id);
+                  // Join with newlines to mimic Excel column copy
+                  const textToCopy = unitIds.join("\n");
 
-                try {
-                  await navigator.clipboard.writeText(textToCopy);
+                  try {
+                    await navigator.clipboard.writeText(textToCopy);
 
-                  // Visual feedback
-                  const originalHTML = copyAllBtn.innerHTML;
-                  copyAllBtn.innerHTML = "<span>✓</span><span>Copied!</span>";
-                  copyAllBtn.style.background = "linear-gradient(135deg, rgba(52, 199, 89, 0.15) 0%, rgba(48, 209, 88, 0.15) 100%)";
-                  copyAllBtn.style.borderColor = "rgba(52, 199, 89, 0.3)";
-                  copyAllBtn.style.color = "#34c759";
+                    // Visual feedback
+                    const originalHTML = copyAllBtn.innerHTML;
+                    copyAllBtn.innerHTML = "<span>✓</span><span>Copied!</span>";
+                    copyAllBtn.style.background = "linear-gradient(135deg, rgba(52, 199, 89, 0.15) 0%, rgba(48, 209, 88, 0.15) 100%)";
+                    copyAllBtn.style.borderColor = "rgba(52, 199, 89, 0.3)";
+                    copyAllBtn.style.color = "#34c759";
 
-                  setTimeout(() => {
-                    copyAllBtn.innerHTML = originalHTML;
-                    copyAllBtn.style.background = "";
-                    copyAllBtn.style.borderColor = "";
-                    copyAllBtn.style.color = "";
-                  }, 2000);
-                } catch (error) {
-                  console.error("Failed to copy:", error);
-                  alert("Failed to copy unit IDs to clipboard");
-                }
-              });
-            }
+                    setTimeout(() => {
+                      copyAllBtn.innerHTML = originalHTML;
+                      copyAllBtn.style.background = "";
+                      copyAllBtn.style.borderColor = "";
+                      copyAllBtn.style.color = "";
+                    }, 2000);
+                  } catch (error) {
+                    console.error("Failed to copy:", error);
+                    alert("Failed to copy unit IDs to clipboard");
+                  }
+                });
+              }
+            };
+
+            // Setup copy buttons for all tabs
+            setupCopyAllButton("copyAllBtn", result.discrepancies);
+            setupCopyAllButton(
+              "copyStatusBtn",
+              result.discrepancies.filter((d) => d.type === "status")
+            );
+            setupCopyAllButton(
+              "copyPriceBtn",
+              result.discrepancies.filter((d) => d.type === "price")
+            );
 
             // Tabs behavior
             Array.from(document.querySelectorAll(".tabs .tab-btn")).forEach((btn) => {
